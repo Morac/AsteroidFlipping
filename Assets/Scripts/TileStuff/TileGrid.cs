@@ -24,7 +24,7 @@ public class TileGrid : MonoBehaviour
 
 	public GameObject player;
 
-	public void Start()
+	public void Generate()
 	{
 		grid = new Tile[SizeX, SizeY];
 
@@ -269,4 +269,5 @@ public class TileGrid : MonoBehaviour
 		adj.Add(v - Vector2.right);
 		return adj;
 	}
+
 }
