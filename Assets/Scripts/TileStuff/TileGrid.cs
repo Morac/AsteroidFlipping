@@ -102,10 +102,11 @@ public class TileGrid : MonoBehaviour
 		tile.transform.position = point;
 		tile.transform.parent = transform;
 		tile.X = (int)point.x;
-		tile.Y = (int)point.y;
+		tile.Y = (int)point.z;
 		tile.type = type;
 		tile.tilegrid = this;
 		grid[x, y] = tile;
+		tile.name = tile.name.Replace("(Clone)", "");
 	}
 
 
@@ -260,13 +261,35 @@ public class TileGrid : MonoBehaviour
 		return Random.value > percent;
 	}
 
-	List<Vector2> Adjacents(Vector2 v)
+	public List<Vector2> Adjacents(Vector2 v, bool diagonals = false)
 	{
 		List<Vector2> adj = new List<Vector2>();
-		adj.Add(v + Vector2.up);
-		adj.Add(v - Vector2.up);
-		adj.Add(v + Vector2.right);
-		adj.Add(v - Vector2.right);
+		if (InRange(v + Vector2.up))
+			adj.Add(v + Vector2.up);
+		if (InRange(v - Vector2.up))
+			adj.Add(v - Vector2.up);
+		if (InRange(v + Vector2.right))
+			adj.Add(v + Vector2.right);
+		if (InRange(v - Vector2.right))
+			adj.Add(v - Vector2.right);
+
+		if(diagonals)
+		{
+			Vector2 p;
+			p = v + Vector2.up + Vector2.right;
+			if (InRange(p))
+				adj.Add(p);
+			p = v + Vector2.up - Vector2.right;
+			if (InRange(p))
+				adj.Add(p);
+			p = v - Vector2.up + Vector2.right;
+			if (InRange(p))
+				adj.Add(p);
+			p = v - Vector2.up - Vector2.right;
+			if (InRange(p))
+				adj.Add(p);
+		}
+
 		return adj;
 	}
 

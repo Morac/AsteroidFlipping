@@ -9,7 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: FundsDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +25,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400002}
   - 114: {fileID: 11400002}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: FundsLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - 4: {fileID: 400004}
   - 114: {fileID: 11400006}
   - 114: {fileID: 11400004}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: Funds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500.217377, y: 360, z: 0}
+  m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -101,15 +101,15 @@ MonoBehaviour:
   leftAnchor:
     target: {fileID: 0}
     relative: 1
-    absolute: -200
+    absolute: -195
   rightAnchor:
     target: {fileID: 0}
     relative: 1
-    absolute: 0
+    absolute: 5
   bottomAnchor:
     target: {fileID: 0}
-    relative: 1
-    absolute: -200
+    relative: .5
+    absolute: 160
   topAnchor:
     target: {fileID: 0}
     relative: 1
@@ -118,7 +118,7 @@ MonoBehaviour:
   mColor: {r: 1, g: 1, b: 1, a: 1}
   mPivot: 2
   mWidth: 200
-  mHeight: 200
+  mHeight: 2
   mDepth: 2
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0

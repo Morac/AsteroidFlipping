@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class Tile : MonoBehaviour 
 {
@@ -17,8 +17,18 @@ public class Tile : MonoBehaviour
 	public TileType type;
 	public TileGrid tilegrid;
 
-	public void SetTile(Tile[] tilelist, TileType type = TileType.Interior)
+	public void SetTile(params Tile[] tilelist)
 	{
 		tilegrid.SetTile(tilelist, X, Y, type);
+	}
+
+	public List<Tile> AdjacentTiles(bool diagonals)
+	{
+		List<Tile> list = new List<Tile>();
+		foreach(var adj in tilegrid.Adjacents(new Vector2(X,Y), diagonals))
+		{
+			list.Add(tilegrid.grid[(int)adj.x, (int)adj.y]);
+		}
+		return list;
 	}
 }
