@@ -52,7 +52,7 @@ public class PlayerTool : MonoBehaviour
 				SelectionHightlight.renderer.material.color = transparent(Color.red);
 			}
 
-			if (Input.GetButton("Fire1") && IsValid(tile))
+			if (Input.GetButton("Fire1") && IsValid(tile) && !GlobalSettings.HitUI())
 			{
 				if (endTime == 0)
 				{

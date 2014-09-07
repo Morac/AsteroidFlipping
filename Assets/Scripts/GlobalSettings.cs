@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public static class GlobalSettings
 {
@@ -12,5 +12,26 @@ public static class GlobalSettings
 	{
 		public const string BuyScreen = "buyscreen";
 		public const string MainLevel = "main";
+	}
+
+	static HashSet<Camera> uiCameras = new HashSet<Camera>();
+	public static void RegisterUI(Camera c)
+	{
+		uiCameras.Add(c);
+	}
+	public static void DeregisterUI(Camera c)
+	{
+		uiCameras.Remove(c);
+	}
+
+	public static bool HitUI()
+	{
+		foreach(var ui in uiCameras)
+		{
+			var ray = ui.ScreenPointToRay(Input.mousePosition);
+			if (Physics.Raycast(ray, 10000, LayerMask.GetMask("UI")))
+				return true;
+		}
+		return false;
 	}
 }

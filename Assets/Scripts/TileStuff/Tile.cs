@@ -11,10 +11,16 @@ public class Tile : MonoBehaviour
 		Empty
 	}
 
+	public bool CanBeAttachedTo = false;
+
+	[HideInInspector]
 	public int X;
+	[HideInInspector]
 	public int Y;
 
+	[HideInInspector]
 	public TileType type;
+	[HideInInspector]
 	public TileGrid tilegrid;
 
 	public void SetTile(params Tile[] tilelist)

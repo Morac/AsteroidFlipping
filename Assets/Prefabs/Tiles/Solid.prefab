@@ -13,7 +13,7 @@ GameObject:
   - 23: {fileID: 2300000}
   - 114: {fileID: 11400000}
   m_Layer: 0
-  m_Name: SolidTile
+  m_Name: Solid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147c65b1bb46fe546ab55f459447672e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanBeAttachedTo: 1
   X: 0
   Y: 0
   type: 0
