@@ -34,4 +34,12 @@ public static class GlobalSettings
 		}
 		return false;
 	}
+
+#if UNITY_EDITOR
+	[UnityEditor.MenuItem("Utils/Clear playerprefs")]
+	static void ClearPlayerPrefs()
+	{
+		PlayerPrefs.DeleteAll();
+	}
+#endif
 }

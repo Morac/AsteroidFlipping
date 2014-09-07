@@ -23,9 +23,9 @@ public class Tile : MonoBehaviour
 	[HideInInspector]
 	public TileGrid tilegrid;
 
-	public void SetTile(params Tile[] tilelist)
+	public Tile SetTile(params Tile[] tilelist)
 	{
-		tilegrid.SetTile(tilelist, X, Y, type);
+		return tilegrid.SetTile(tilelist, X, Y, type);
 	}
 
 	public List<Tile> AdjacentTiles(bool diagonals)
@@ -36,5 +36,31 @@ public class Tile : MonoBehaviour
 			list.Add(tilegrid.grid[(int)adj.x, (int)adj.y]);
 		}
 		return list;
+	}
+
+	public bool CanAfford()
+	{
+		bool afford = true;
+		foreach(var cost in GetComponents<CostsItem>())
+		{
+			afford &= PlayerInventory.CanAfford(cost.item, cost.count);
+		}
+		return afford;
+	}
+
+	public string CostString()
+	{
+		string cost_str = "";
+		foreach(var cost in GetComponents<CostsItem>())
+		{
+			string s = cost.item + ": " + cost.count;
+			if(!PlayerInventory.CanAfford(cost.item, cost.count))
+			{
+				s = "[FF0000]" + s + "[-]";
+			}
+			cost_str += s + " ";
+		}
+		return cost_str;
+
 	}
 }

@@ -34,3 +34,11 @@ public static class TransformExtensions
 		return t.gameObject.GetComponentInParents<T>();
 	}
 }
+
+public static class CameraExtensions
+{
+	public static void Shake(this Camera c, float amount, float duration)
+	{
+		iTween.ShakePosition(c.gameObject, Vector3.one * amount, duration);
+	}
+}

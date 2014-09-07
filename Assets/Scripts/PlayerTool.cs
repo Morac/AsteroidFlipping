@@ -60,7 +60,12 @@ public class PlayerTool : MonoBehaviour
 				}
 				if (endTime < Time.time)
 				{
-					tile.SetTile(SelectedTool);
+					tile.BroadcastMessage("RemovedByPlayer", SendMessageOptions.DontRequireReceiver);
+					var newtile = tile.SetTile(SelectedTool);
+					if(newtile != null)
+					{
+						newtile.BroadcastMessage("PlacedByPlayer", SendMessageOptions.DontRequireReceiver);
+					}
 				}
 			}
 			else
@@ -81,7 +86,7 @@ public class PlayerTool : MonoBehaviour
 
 	public bool IsValid(Tile t)
 	{
-		return t.name != SelectedTool.name && t.type == Tile.TileType.Interior;
+		return t.name != SelectedTool.name && t.type == Tile.TileType.Interior && SelectedTool.CanAfford();
 	}
 
 	Tile GetSelectedTile()

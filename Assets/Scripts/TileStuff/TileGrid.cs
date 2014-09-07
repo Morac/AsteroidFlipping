@@ -86,16 +86,16 @@ public class TileGrid : MonoBehaviour
 		player.transform.position = new Vector3(spawnpoint.x, 0, spawnpoint.y);
 	}
 
-	public void SetTile(Tile[] tilelist, int x, int y, Tile.TileType type = Tile.TileType.Interior)
+	public Tile SetTile(Tile[] tilelist, int x, int y, Tile.TileType type = Tile.TileType.Interior)
 	{
 		if (!InRange(x, y))
-			return;
+			return null;
 
 		if (grid[x, y] != null)
 			Destroy(grid[x, y].gameObject);
 
 		if (tilelist == null || tilelist.Length == 0)
-			return;
+			return null;
 
 		var point = new Vector3(x, 0, y);
 		Tile tile = Instantiate(tilelist[Random.Range(0, tilelist.Length - 1)]) as Tile;
@@ -107,6 +107,8 @@ public class TileGrid : MonoBehaviour
 		tile.tilegrid = this;
 		grid[x, y] = tile;
 		tile.name = tile.name.Replace("(Clone)", "");
+
+		return tile;
 	}
 
 
