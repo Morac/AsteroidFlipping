@@ -11,6 +11,8 @@ public class DropItem : MonoBehaviour
 
 	void RemovedByPlayer()
 	{
-		PlayerInventory.inventory[item] += Random.Range(MinDropAmount, MaxDropAmount + 1);
+		int amount = Random.Range(MinDropAmount, MaxDropAmount + 1);
+		Log.instance.AddMessage(item + " +" + amount);
+		PlayerInventory.inventory[item] += amount;
 	}
 }

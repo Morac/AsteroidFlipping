@@ -49,10 +49,10 @@ function Awake () {
 	if (!character)
 		character = transform;
 	
-	initOffsetToPlayer = mainCameraTransform.position - character.position;
+	initOffsetToPlayer = mainCameraTransform.localPosition - character.position;
 	
 	// Save camera offset so we can use it in the first frame
-	cameraOffset = mainCameraTransform.position - character.position;
+	cameraOffset = mainCameraTransform.localPosition - character.position;
 	
 	// Set the initial cursor position to the center of the screen
 	cursorScreenPosition = Vector3 (0.5 * Screen.width, 0.5 * Screen.height, 0);
@@ -81,7 +81,7 @@ function Update () {
 	// HANDLE CHARACTER FACING DIRECTION AND SCREEN FOCUS POINT
 	
 	// First update the camera position to take into account how much the character moved since last frame
-	//mainCameraTransform.position = Vector3.Lerp (mainCameraTransform.position, character.position + cameraOffset, Time.deltaTime * 45.0f * deathSmoothoutMultiplier);
+	//mainCameraTransform.localPosition = Vector3.Lerp (mainCameraTransform.localPosition, character.position + cameraOffset, Time.deltaTime * 45.0f * deathSmoothoutMultiplier);
 	
 	// Set up the movement plane of the character, so screenpositions
 	// can be converted into world positions on this plane
@@ -137,10 +137,10 @@ function Update () {
 	var cameraTargetPosition : Vector3 = character.position + initOffsetToPlayer + cameraAdjustmentVector * cameraPreview;
 	
 	// Apply some smoothing to the camera movement
-	mainCameraTransform.position = Vector3.SmoothDamp (mainCameraTransform.position, cameraTargetPosition, cameraVelocity, cameraSmoothing);
+	mainCameraTransform.localPosition = Vector3.SmoothDamp (mainCameraTransform.localPosition, cameraTargetPosition, cameraVelocity, cameraSmoothing);
 	
 	// Save camera offset so we can use it in the next frame
-	cameraOffset = mainCameraTransform.position - character.position;
+	cameraOffset = mainCameraTransform.localPosition - character.position;
 }
 
 public static function PlaneRayIntersection (plane : Plane, ray : Ray) : Vector3 {

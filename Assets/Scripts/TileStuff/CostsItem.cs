@@ -10,5 +10,12 @@ public class CostsItem : MonoBehaviour
 	void PlacedByPlayer()
 	{
 		PlayerInventory.inventory[item] -= count;
+		Log.instance.AddMessage(item + " -" + count);
+	}
+
+	void RemovedByPlayer()
+	{
+		PlayerInventory.inventory[item] += count;
+		Log.instance.AddMessage(item + " +" + count);
 	}
 }

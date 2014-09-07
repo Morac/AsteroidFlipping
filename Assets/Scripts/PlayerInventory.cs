@@ -81,6 +81,7 @@ public static class PlayerInventory
 				PlayerPrefs.SetInt(ItemKey(m), value);
 				if (ItemChangedCallback != null)
 					ItemChangedCallback(m, value);
+
 			}
 		}
 

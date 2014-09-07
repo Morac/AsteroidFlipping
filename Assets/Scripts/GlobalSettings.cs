@@ -41,5 +41,11 @@ public static class GlobalSettings
 	{
 		PlayerPrefs.DeleteAll();
 	}
+
+	[UnityEditor.MenuItem("Utils/Add cash")]
+	static void AddCash()
+	{
+		PlayerInventory.Funds += 1000000;
+	}
 #endif
 }

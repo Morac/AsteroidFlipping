@@ -13,6 +13,9 @@ public class Tile : MonoBehaviour
 
 	public bool CanBeAttachedTo = false;
 
+	public float shake_amount = 0.05f;
+	public float shake_duration = 0.2f;
+
 	[HideInInspector]
 	public int X;
 	[HideInInspector]
@@ -31,6 +34,8 @@ public class Tile : MonoBehaviour
 	public List<Tile> AdjacentTiles(bool diagonals)
 	{
 		List<Tile> list = new List<Tile>();
+		if (tilegrid == null)
+			return list;
 		foreach(var adj in tilegrid.Adjacents(new Vector2(X,Y), diagonals))
 		{
 			list.Add(tilegrid.grid[(int)adj.x, (int)adj.y]);
@@ -62,5 +67,10 @@ public class Tile : MonoBehaviour
 		}
 		return cost_str;
 
+	}
+
+	void PlacedByPlayer()
+	{
+		Camera.main.Shake(shake_amount, shake_duration);
 	}
 }

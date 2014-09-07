@@ -9,7 +9,8 @@ public class AsteroidListItem : MonoBehaviour
 	public UILabel SizeLabel;
 	public UIButton BuyBtn;
 
-	const int MinAsteroidSize = 8;
+	const int FreeAsteroidSize = 8;
+	const int MinAsteroidSize = 10;
 	const int MaxAsteroidSize = 40;
 
 	public int seed;
@@ -19,7 +20,7 @@ public class AsteroidListItem : MonoBehaviour
 	public void SetupFree()
 	{
 		seed = Random.Range(0, int.MaxValue);
-		size = MinAsteroidSize;
+		size = FreeAsteroidSize;
 		cost = 0;
 		UpdateLabels();
 	}
@@ -55,6 +56,7 @@ public class AsteroidListItem : MonoBehaviour
 			PlayerInventory.Funds -= cost;
 			GlobalSettings.Seed = seed;
 			GlobalSettings.Size = size;
+			GameManager.AsteroidValue = cost / 10;
 
 			Application.LoadLevel(GlobalSettings.Scene.MainLevel);
 		}

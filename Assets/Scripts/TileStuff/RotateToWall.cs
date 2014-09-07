@@ -12,7 +12,13 @@ public class RotateToWall : MonoBehaviour
 		{
 			if(adj.CanBeAttachedTo)
 			{
-				transform.LookAt(adj.transform);
+				Vector3 dir = adj.transform.position - transform.position;
+				dir.y = 0;
+				transform.forward = dir;
+
+				//Vector3 lookpoint = adj.transform.position;
+				//lookpoint.y = adj.transform.position.y;
+				//transform.LookAt(lookpoint);
 				break;
 			}
 		}

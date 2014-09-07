@@ -6,12 +6,12 @@ public class Valuable : MonoBehaviour {
 
 	public int value = 10;
 
-	void Start()
+	void PlacedByPlayer()
 	{
 		GameManager.AsteroidValue += value;
 	}
 
-	void OnDestroy()
+	void RemovedByPlayer()
 	{
 		GameManager.AsteroidValue -= value;
 	}
