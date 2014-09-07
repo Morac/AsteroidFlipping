@@ -83,7 +83,7 @@ public class TileGrid : MonoBehaviour
 			}
 		}
 
-		player.transform.position = new Vector3(spawnpoint.x, 1, spawnpoint.y);
+		player.transform.position = new Vector3(spawnpoint.x, 0, spawnpoint.y);
 	}
 
 	public void SetTile(Tile[] tilelist, int x, int y, Tile.TileType type = Tile.TileType.Interior)

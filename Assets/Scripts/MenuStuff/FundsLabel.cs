@@ -2,11 +2,13 @@
 using System.Collections;
 
 [RequireComponent(typeof(UILabel))]
-public class FundsLabel : MonoBehaviour {
+public class FundsLabel : MonoBehaviour
+{
 
 	UILabel label;
 
-	void Start () {
+	void Start()
+	{
 		label = GetComponent<UILabel>();
 		UpdateFunds(PlayerInventory.Funds);
 		PlayerInventory.FundsChangedCallback += UpdateFunds;
@@ -16,8 +18,9 @@ public class FundsLabel : MonoBehaviour {
 	{
 		PlayerInventory.FundsChangedCallback -= UpdateFunds;
 	}
-	
-	void UpdateFunds(int val) {
+
+	void UpdateFunds(int val)
+	{
 		label.text = GlobalSettings.Currency + val.ToString();
 	}
 }
