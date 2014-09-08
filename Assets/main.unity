@@ -682,8 +682,8 @@ MonoBehaviour:
   arrangement: 1
   sorting: 0
   pivot: 0
-  maxPerLine: 0
-  cellWidth: 200
+  maxPerLine: 6
+  cellWidth: 90
   cellHeight: 80
   animateSmoothly: 0
   hideInactive: 1
@@ -1510,7 +1510,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 2
+  aspectRatio: 100
 --- !u!1 &657567640
 GameObject:
   m_ObjectHideFlags: 0
@@ -2390,7 +2390,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 13.333333
+  aspectRatio: 13.7931032
 --- !u!1 &804573849
 GameObject:
   m_ObjectHideFlags: 0

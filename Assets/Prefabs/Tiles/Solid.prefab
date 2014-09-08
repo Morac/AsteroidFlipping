@@ -304,7 +304,7 @@ MonoBehaviour:
   item: 3
   MinDropAmount: 1
   MaxDropAmount: 1
-  ChanceOfDrop: .25
+  ChanceOfDrop: .119999997
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1
