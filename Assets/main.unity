@@ -19,7 +19,7 @@ RenderSettings:
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientLight: {r: .200000003, g: .200000003, b: .200000003, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 650a84027c73ef04ab06d0288003f58f, type: 2}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: .5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -744,6 +744,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d69206384fc00c4d815382daa940d3a, type: 2}
   - {fileID: 11400006, guid: 854aa98ebeb69b44ebbe04dc4c23f37f, type: 2}
   - {fileID: 11400004, guid: 46e09a545444297468578d1d88b87b06, type: 2}
+  - {fileID: 11400004, guid: 3dac33b377635e34b9230156a703739c, type: 2}
   prefab: {fileID: 11400000, guid: edc34e85f4f36b84ea62a10260b9e0a2, type: 2}
 --- !u!1 &313892966
 GameObject:
@@ -1509,7 +1510,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 100
+  aspectRatio: 2
 --- !u!1 &657567640
 GameObject:
   m_ObjectHideFlags: 0
@@ -2389,7 +2390,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 13.7931032
+  aspectRatio: 13.333333
 --- !u!1 &804573849
 GameObject:
   m_ObjectHideFlags: 0
@@ -2591,7 +2592,7 @@ Light:
   serializedVersion: 3
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: .5
+  m_Intensity: .300000012
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
