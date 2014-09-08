@@ -12,6 +12,7 @@ public class Tile : MonoBehaviour
 	}
 
 	public bool CanBeAttachedTo = false;
+	public bool Solid = true;
 
 	public float shake_amount = 0.05f;
 	public float shake_duration = 0.2f;

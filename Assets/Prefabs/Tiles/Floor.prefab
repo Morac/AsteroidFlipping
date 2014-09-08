@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CanBeAttachedTo: 0
+  Solid: 0
   shake_amount: .0500000007
   shake_duration: .200000003
   X: 0

@@ -100,7 +100,8 @@ public class PlayerTool : MonoBehaviour
 				continue;
 			}
 			possible.AddRange(tile.AdjacentTiles(true));
-			possible.Add(tile);
+			if(!SelectedTool.Solid)
+				possible.Add(tile);
 			break;
 		}
 
