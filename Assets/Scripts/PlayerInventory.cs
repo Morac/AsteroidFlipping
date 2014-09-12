@@ -1,8 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
-public static class PlayerInventory 
+public static class PlayerInventory
 {
+	#region StringConsts
+	const string FundsKey = "Player.Funds";
+	static string ItemKey(Item m) { return "Player." + m.ToString(); }
+	static string TileKey(Tile t) { return "Tile." + t.name; }
+	#endregion
+
 	public enum Item
 	{
 		Metals,
@@ -11,19 +18,20 @@ public static class PlayerInventory
 		Electronics
 	}
 
+	#region Events
 	public delegate void FundsChanged(int newval);
 	public static FundsChanged FundsChangedCallback;
 
 	public delegate void ItemChanged(Item m, int newval);
 	public static ItemChanged ItemChangedCallback;
+	#endregion
 
-	const string FundsKey = "Player.Funds";
 	static int _funds = -1;
 	public static int Funds
 	{
 		get
 		{
-			if(_funds == -1)
+			if (_funds == -1)
 			{
 				_funds = PlayerPrefs.GetInt(FundsKey, 0);
 			}
@@ -33,7 +41,7 @@ public static class PlayerInventory
 		{
 			_funds = value;
 			PlayerPrefs.SetInt(FundsKey, value);
-			if(FundsChangedCallback != null)
+			if (FundsChangedCallback != null)
 			{
 				FundsChangedCallback(value);
 			}
@@ -50,10 +58,6 @@ public static class PlayerInventory
 		return inventory[m] >= val;
 	}
 
-	public static string ItemKey(Item m)
-	{
-		return "Player." + m.ToString();
-	}
 
 	public static Inventory inventory = new Inventory();
 
@@ -88,11 +92,49 @@ public static class PlayerInventory
 		public override string ToString()
 		{
 			string s = " ";
-			foreach(var m in counts)
+			foreach (var m in counts)
 			{
 				s += m.Key + ": " + m.Value + " ";
 			}
 			return s;
 		}
 	}
+
+
+	static Tile[] cachedTileList = null;
+
+	static void CacheTileList()
+	{
+		var prefablist = TilePrefabList.Instance;
+		var returnlist = new List<Tile>();
+		returnlist.AddRange(prefablist.BasicTiles);
+
+		foreach (var item in prefablist.PurchasableTiles)
+		{
+			if (IsUnlocked(item))
+				returnlist.Add(item);
+		}
+		cachedTileList = returnlist.ToArray();
+	}
+
+
+	public static Tile[] GetUsableTiles()
+	{
+		if (cachedTileList == null)
+			CacheTileList();
+		return cachedTileList;
+	}
+
+	public static void Unlock(Tile tile)
+	{
+		PlayerPrefs.SetInt(TileKey(tile), 1);
+		CacheTileList();
+	}
+
+	public static bool IsUnlocked(Tile tile)
+	{
+		return PlayerPrefs.GetInt(TileKey(tile), 0) == 1;
+	}
+
+
 }

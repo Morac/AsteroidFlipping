@@ -5,7 +5,7 @@ using System.Collections;
 public class TileItemList : MonoBehaviour
 {
 
-	public Tile[] Tiles;
+	public Tile[] Tiles { get { return PlayerInventory.GetUsableTiles(); } }
 	public TileItemBtn prefab;
 
 	void Start()

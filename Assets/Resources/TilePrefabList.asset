@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0905cc38aab95694a821443869d6572e, type: 3}
+  m_Name: TilePrefabList
+  m_EditorClassIdentifier: 
+  BasicTiles:
+  - {fileID: 11400000, guid: 2ffe69e9be0c8274b95c369ecb9d2f78, type: 2}
+  - {fileID: 11400004, guid: 5c8c1fda624ee64488e4310362b5d733, type: 2}
+  - {fileID: 11400000, guid: 3d69206384fc00c4d815382daa940d3a, type: 2}
+  PurchasableTiles:
+  - {fileID: 11400004, guid: 46e09a545444297468578d1d88b87b06, type: 2}
+  - {fileID: 11400004, guid: 3dac33b377635e34b9230156a703739c, type: 2}
+  - {fileID: 11400006, guid: 854aa98ebeb69b44ebbe04dc4c23f37f, type: 2}
+  - {fileID: 11400000, guid: 688bc8c7777d8fe4ab3093580b5ed676, type: 2}
+  SystemTiles:
+  - {fileID: 11400000, guid: 961ca034a0f83e043901d297c4598dd5, type: 2}
+  - {fileID: 11400000, guid: c94dae60aa1e8b64c9c78d5ffe45fedf, type: 2}
