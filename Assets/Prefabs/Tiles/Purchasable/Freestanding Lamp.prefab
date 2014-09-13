@@ -84,7 +84,7 @@ GameObject:
   - 114: {fileID: 11400000}
   - 114: {fileID: 11400006}
   m_Layer: 8
-  m_Name: Light
+  m_Name: Freestanding Lamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +318,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147c65b1bb46fe546ab55f459447672e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BuyBlueprintCost: 200
+  Description: 
   CanBeAttachedTo: 0
+  CanPlaceOnTopOfCharacter: 1
   shake_amount: .0500000007
   shake_duration: .200000003
   X: 0
