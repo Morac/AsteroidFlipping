@@ -8,7 +8,7 @@ public class TileItemBtn : MonoBehaviour
 
 	void Start()
 	{
-		label.text = TileItem.name;
+		label.text = TileItem.GetDisplayName();
 	}
 
 	void OnClick()

@@ -17,7 +17,7 @@ public class BlueprintCard : MonoBehaviour {
 	public void Init(Tile init)
 	{
 		tile = init;
-		NameLabel.text = tile.name;
+		NameLabel.text = tile.GetDisplayName();
 		UnlockCostLabel.text = GlobalSettings.Currency + tile.BuyBlueprintCost.ToString();
 		if(PlayerInventory.CanAfford(tile.BuyBlueprintCost))
 		{

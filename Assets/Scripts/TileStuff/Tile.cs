@@ -11,14 +11,29 @@ public class Tile : MonoBehaviour
 		Empty
 	}
 
-	public int BuyBlueprintCost = 0;
+	public enum TileRarity
+	{
+		Common = 4,
+		Uncommon = 2,
+		Rare = 1
+	}
+
+	public string DisplayName = "";
+	public string DisplayPluralName = "";
+
+	[TextArea]
 	public string Description = "";
+
+	public TileRarity Rarity = TileRarity.Common;
+	public int BuyBlueprintCost = 0;
 
 	public bool CanBeAttachedTo = false;
 	public bool CanPlaceOnTopOfCharacter = true;
 
-	public float shake_amount = 0.05f;
-	public float shake_duration = 0.2f;
+	public float ShakeAmount = 0.05f;
+	public float ShakeDuration = 0.2f;
+
+	public List<Contract.ContractType> ContractTags = new List<Contract.ContractType>();
 
 	[HideInInspector]
 	public int X;
@@ -29,6 +44,16 @@ public class Tile : MonoBehaviour
 	public TileType type;
 	[HideInInspector]
 	public TileGrid tilegrid;
+
+	public string GetDisplayName()
+	{
+		return DisplayName != "" ? DisplayName : name;
+	}
+
+	public string GetDisplayPluralName()
+	{
+		return DisplayPluralName != "" ? DisplayPluralName : GetDisplayName() + "s";
+	}
 
 	public Tile SetTile(params Tile[] tilelist)
 	{
@@ -75,6 +100,6 @@ public class Tile : MonoBehaviour
 
 	void PlacedByPlayer()
 	{
-		Camera.main.Shake(shake_amount, shake_duration);
+		Camera.main.Shake(ShakeAmount, ShakeDuration);
 	}
 }

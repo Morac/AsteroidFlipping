@@ -35,6 +35,14 @@ public static class GlobalSettings
 		return false;
 	}
 
+
+	#region EconomyVariables
+	public const int BaseContractPayout = 10;
+	public const int ContractVariation = 2;
+	public const float ChanceOfRequirementExclusion = 1f / 6f;
+
+	#endregion
+
 #if UNITY_EDITOR
 	[UnityEditor.MenuItem("Utils/Clear playerprefs")]
 	static void ClearPlayerPrefs()

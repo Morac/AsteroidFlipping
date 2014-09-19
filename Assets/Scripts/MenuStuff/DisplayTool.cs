@@ -15,6 +15,6 @@ public class DisplayTool : MonoBehaviour
 
 	void Update()
 	{
-		label.text = tool.SelectedTool.name;
+		label.text = tool.SelectedTool.GetDisplayName();
 	}
 }

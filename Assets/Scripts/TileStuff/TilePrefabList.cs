@@ -21,6 +21,42 @@ public class TilePrefabList : ScriptableObject {
 		}
 	}
 
+	public List<Tile> GetTilesWithTag(Contract.ContractType tag)
+	{
+		List<Tile> returnlist = new List<Tile>();
+		foreach (var item in BasicTiles)
+		{
+			if (item.ContractTags.Contains(tag))
+			{
+				returnlist.Add(item);
+			}
+		}
+		foreach(var item in PurchasableTiles)
+		{
+			if(item.ContractTags.Contains(tag))
+			{
+				returnlist.Add(item);
+			}
+		}
+		return returnlist;
+	}
+
+
+	public List<Tile> GetTilesWithoutTag(Contract.ContractType tag)
+	{
+		List<Tile> returnlist = new List<Tile>();
+		foreach (var item in PurchasableTiles)
+		{
+			if (item.ContractTags.Contains(tag) == false)
+			{
+				returnlist.Add(item);
+			}
+		}
+		return returnlist;
+	}
+
+
+
 #if UNITY_EDITOR
 	[UnityEditor.MenuItem("Assets/Create/Tile Prefab List")]
 	static void Create()
