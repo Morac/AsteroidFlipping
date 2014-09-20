@@ -54,9 +54,10 @@ public class AsteroidListItem : MonoBehaviour
 		if (PlayerInventory.CanAfford(cost))
 		{
 			PlayerInventory.Funds -= cost;
-			GlobalSettings.Seed = seed;
-			GlobalSettings.Size = size;
+			//GlobalSettings.Seed = seed;
+			//GlobalSettings.Size = size;
 			GameManager.AsteroidValue = cost / 10;
+			GameManager.NewAsteroid("Asteroid" + seed, seed, size);
 
 			Application.LoadLevel(GlobalSettings.Scene.MainLevel);
 		}

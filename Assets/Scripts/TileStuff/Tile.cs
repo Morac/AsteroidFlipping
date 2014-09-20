@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Tile : MonoBehaviour 
 {
@@ -101,5 +102,42 @@ public class Tile : MonoBehaviour
 	void PlacedByPlayer()
 	{
 		Camera.main.Shake(ShakeAmount, ShakeDuration);
+	}
+
+	public delegate void SaveCallback();
+	public delegate void LoadCallback(Dictionary<string, string> args);
+
+	public SaveCallback OnSave;
+	public LoadCallback OnLoad;
+
+	public Dictionary<string, string> SaveOutput = new Dictionary<string, string>();
+
+	public string Save()
+	{
+		if(OnSave != null)
+			OnSave();
+
+		string r = "";
+		foreach(var pair in SaveOutput)
+		{
+			r += pair.Key + ":" + pair.Value + ",";
+		}
+		if(r != "")
+			r = r.Substring(0, r.Length - 1);
+		return r;
+	}
+
+	public void Load(string[] saveargs)
+	{
+		Dictionary<string, string> args = new Dictionary<string, string>();
+		
+		foreach(var s in saveargs)
+		{
+			var kvp = s.Split(':');
+			if(kvp.Length == 2)
+				args[kvp[0]] = args[kvp[1]];
+		}
+		if(OnLoad != null)
+			OnLoad(args);
 	}
 }

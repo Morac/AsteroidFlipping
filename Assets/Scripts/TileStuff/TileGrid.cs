@@ -24,10 +24,13 @@ public class TileGrid : MonoBehaviour
 
 	public GameObject player;
 
-	public void Generate()
+	public void Setup()
 	{
 		grid = new Tile[SizeX, SizeY];
+	}
 
+	public void Generate()
+	{
 		var solidgrid = GenerateInitialAsteroid();
 		solidgrid = CleanUpHoles(solidgrid);
 
@@ -301,4 +304,50 @@ public class TileGrid : MonoBehaviour
 		return adj;
 	}
 
+
+	public string Save()
+	{
+		string s = "";
+		for (int x = 0; x < grid.GetLength(0); x++)
+		{
+			for (int y = 0; y < grid.GetLength(1); y++)
+			{
+				if (grid[x, y] == null)
+					continue;
+				s += x + "," + y + "," + grid[x,y].name + "," + grid[x,y].type + "," + grid[x,y].Save() + ";";
+			}
+		}
+		return s;
+	}
+
+	const int numreserved = 4;
+	public void Load(string save)
+	{
+		var tilesplit = save.Split(';');
+
+		List<Tile> possibleTiles = new List<Tile>();
+		possibleTiles.AddRange(TilePrefabList.Instance.SystemTiles);
+		possibleTiles.AddRange(TilePrefabList.Instance.BasicTiles);
+		possibleTiles.AddRange(TilePrefabList.Instance.PurchasableTiles);
+		
+		foreach(var ts in tilesplit)
+		{
+			if (string.IsNullOrEmpty(ts))
+				continue;
+
+			var commasplit = ts.Split(',');
+			int x = int.Parse(commasplit[0]);
+			int y = int.Parse(commasplit[1]);
+
+			string tilename = commasplit[2];
+			Tile.TileType type = (Tile.TileType)System.Enum.Parse(typeof(Tile.TileType), commasplit[3]);
+
+			string[] args = new string[commasplit.Length - numreserved];
+			System.Array.Copy(commasplit, numreserved, args, 0, args.Length);
+
+			Tile prefab = possibleTiles.First(item => item.name == tilename);
+			Tile tile = SetTile(new Tile[] { prefab }, x, y, type);
+			tile.Load(args);
+		}
+	}
 }

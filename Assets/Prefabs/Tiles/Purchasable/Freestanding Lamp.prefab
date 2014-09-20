@@ -318,12 +318,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 147c65b1bb46fe546ab55f459447672e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuyBlueprintCost: 200
+  DisplayName: 
+  DisplayPluralName: 
   Description: 
+  Rarity: 4
+  BuyBlueprintCost: 200
   CanBeAttachedTo: 0
   CanPlaceOnTopOfCharacter: 1
-  shake_amount: .0500000007
-  shake_duration: .200000003
+  ShakeAmount: .0500000007
+  ShakeDuration: .200000003
+  ContractTags: 000000000300000002000000010000000400000005000000
   X: 0
   Y: 0
   type: 0

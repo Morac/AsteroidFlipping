@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public static class GlobalSettings
 {
-	public static int Seed = 0;
-	public static float Size = 0;
+	//public static int Seed = 0;
+	//public static float Size = 0;
 
 	public const char Currency = '$';
 
@@ -35,6 +35,14 @@ public static class GlobalSettings
 		return false;
 	}
 
+	public static int SaveSlot = 0;
+	public static string SavePath
+	{
+		get
+		{
+			return Application.dataPath + "/Saves/Slot" + SaveSlot + "/";
+		}
+	}
 
 	#region EconomyVariables
 	public const int BaseContractPayout = 10;
