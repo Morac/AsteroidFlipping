@@ -183,6 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: 
   DisplayPluralName: 
+  SaveCode: bw
   Description: 
   Rarity: 4
   BuyBlueprintCost: 0

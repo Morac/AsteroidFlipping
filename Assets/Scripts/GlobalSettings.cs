@@ -36,12 +36,28 @@ public static class GlobalSettings
 	}
 
 	public static int SaveSlot = 0;
+	static bool DirCreated = false;
 	public static string SavePath
 	{
 		get
 		{
-			return Application.dataPath + "/Saves/Slot" + SaveSlot + "/";
+			string path = Application.dataPath + "/Saves/Slot" + SaveSlot + "/";
+			if (!DirCreated)
+			{
+				System.IO.Directory.CreateDirectory(path);
+				DirCreated = true;
+			}
+			return path;
 		}
+	}
+
+	public const string ContractsSaveFileName = "Contracts.txt";
+
+	public static bool IsReservedName(string file)
+	{
+		bool r = false;
+		r |= System.IO.Path.GetFileName(file) == ContractsSaveFileName;
+		return r;
 	}
 
 	#region EconomyVariables

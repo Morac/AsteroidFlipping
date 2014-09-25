@@ -86,6 +86,26 @@ public class Contract
 		public abstract float Chance();
 		public abstract bool Pass(Tile[,] grid);
 		public abstract Requirement Create(ContractSize size, ContractType type, List<Requirement> existing);
+		public abstract string SaveCode();
+
+		public abstract string Save();
+		protected abstract void LoadData(string[] s);
+
+		public static Requirement Load(string s)
+		{
+			string[] split = s.Split('.');
+			
+			foreach(var type in Subclasses)
+			{
+				if(split[0] == type.SaveCode())
+				{
+					Requirement r = (Requirement)System.Activator.CreateInstance(type.GetType());
+					r.LoadData(split);
+					return r;
+				}
+			}
+			return null;
+		}
 
 		public static List<Requirement> Subclasses = new List<Requirement>()
 		{
@@ -162,6 +182,22 @@ public class Contract
 		{
 			return count + "x " + tile.GetDisplayPluralName();
 		}
+
+		public override string SaveCode()
+		{
+			return "tr";
+		}
+
+		public override string Save()
+		{
+			return SaveCode() + "." + count + "." + tile.SaveCode;
+		}
+
+		protected override void LoadData(string[] s)
+		{
+			count = int.Parse(s[1]);
+			tile = TilePrefabList.Instance.GetAllTiles().Find(item => item.SaveCode == s[2]);
+		}
 	}
 
 	public class TileExclusionRequirement : Requirement
@@ -208,6 +244,21 @@ public class Contract
 		{
 			return "No " + tile.GetDisplayPluralName();
 		}
+
+		public override string SaveCode()
+		{
+			return "ter";
+		}
+
+		public override string Save()
+		{
+			return SaveCode() + "." + tile.SaveCode;
+		}
+
+		protected override void LoadData(string[] s)
+		{
+			tile = TilePrefabList.Instance.GetAllTiles().Find(item => item.SaveCode == s[1]);
+		}
 	}
 
 	public class RoomRequirement : Requirement
@@ -233,14 +284,60 @@ public class Contract
 		{
 			return count > 1 ? count + " Rooms" : count + " Room";
 		}
+
+		public override string SaveCode()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override string Save()
+		{
+			throw new System.NotImplementedException();
+		}
+
+		protected override void LoadData(string[] s)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 
+
+	public string Save()
+	{
+		string s = "";
+		s += Size + "," + Type + "," + Payout;
+		foreach(var r in Requirements)
+		{
+			s += "," + r.Save();
+		}
+		return s;
+	}
+
+	public static Contract Load(string s)
+	{
+		string[] split = s.Split(',');
+		Contract c = new Contract();
+		c.Size = (ContractSize)System.Enum.Parse(typeof(ContractSize), split[0]);
+		c.Type = (ContractType)System.Enum.Parse(typeof(ContractType), split[1]);
+		c.Payout = int.Parse(split[2]);
+		for (int i = 3; i < split.Length; i++)
+		{
+			c.Requirements.Add(Requirement.Load(split[i]));
+		}
+
+		return c;
+	}
 
 	[UnityEditor.MenuItem("Utils/Generate Contract test")]
 	static void test()
 	{
 		Contract c = GenerateRandomContract(ContractSize.Large, ContractType.Housing);
 		Debug.Log(c.ToString());
+		string s = c.Save();
+		Debug.Log(s);
+
+		Contract c2 = Load(s);
+		Debug.Log(c2.ToString());
 	}
 
 }

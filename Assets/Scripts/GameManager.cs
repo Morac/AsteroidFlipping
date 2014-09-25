@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
 				Random.seed = _seed;
 				tileGrid.AsteroidRadius = _size;
 				tileGrid.Generate();
+				Save();
 				break;
 			case LevelStartAction.Load:
 				Load(_asteroidName);
@@ -64,34 +65,25 @@ public class GameManager : MonoBehaviour
 				Load(CurrentAsteroids().First());
 				break;
 		}
-		
-		//if (GlobalSettings.Seed != 0)
-		//{
-		//	Random.seed = GlobalSettings.Seed;
-		//}
+	}
 
-		//if (GlobalSettings.Size != 0)
-		//{
-		//	tileGrid.AsteroidRadius = GlobalSettings.Size;
-		//}
-
-		//tileGrid.Setup();
-
-		////loading called from here?
-		////tileGrid.Generate();
-		//Load(CurrentAsteroids().First());
+	public static string SavePath(string asteroidName)
+	{
+		return GlobalSettings.SavePath + asteroidName + ".txt";
 	}
 
 	[ContextMenu("Save")]
 	public void Save()
 	{
-		System.IO.Directory.CreateDirectory(GlobalSettings.SavePath);
-		System.IO.StreamWriter writer = new System.IO.StreamWriter(GlobalSettings.SavePath + AsteroidName + ".txt");
+		string path = SavePath(AsteroidName);
+		System.IO.StreamWriter writer = new System.IO.StreamWriter(path);
 
 		writer.WriteLine(Random.seed);
 		var pos = tileGrid.player.transform.position;
 		writer.WriteLine(pos.x + "," + pos.y + "," + pos.z);
-		writer.WriteLine(tileGrid.Save());
+
+		string s = tileGrid.Save();
+		writer.WriteLine(s);
 
 		writer.Close();
 	}
@@ -99,7 +91,8 @@ public class GameManager : MonoBehaviour
 	public void Load(string asteroidname)
 	{
 		AsteroidName = asteroidname;
-		System.IO.StreamReader reader = new System.IO.StreamReader(GlobalSettings.SavePath + asteroidname + ".txt");
+		string path = SavePath(asteroidname);
+		System.IO.StreamReader reader = new System.IO.StreamReader(path);
 
 		Random.seed = int.Parse(reader.ReadLine());
 
@@ -116,12 +109,15 @@ public class GameManager : MonoBehaviour
 
 	public static List<string> CurrentAsteroids()
 	{
-		var files = System.IO.Directory.GetFiles(GlobalSettings.SavePath, "Asteroid*.txt");
+		var files = System.IO.Directory.GetFiles(GlobalSettings.SavePath, "*.txt");
 		List<string> r = new List<string>();
 		foreach(var file in files)
 		{
-			string mod = System.IO.Path.GetFileNameWithoutExtension(file);
-			r.Add(mod);
+			if (!GlobalSettings.IsReservedName(file))
+			{
+				string mod = System.IO.Path.GetFileNameWithoutExtension(file);
+				r.Add(mod);
+			}
 		}
 		return r;
 	}
@@ -140,5 +136,10 @@ public class GameManager : MonoBehaviour
 		_size = size;
 		OnLevelStart = LevelStartAction.Generate;
 		Application.LoadLevel(GlobalSettings.Scene.MainLevel);
+	}
+
+	void OnApplicationQuit()
+	{
+		Save();
 	}
 }

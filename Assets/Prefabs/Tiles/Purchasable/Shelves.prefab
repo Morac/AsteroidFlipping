@@ -2555,6 +2555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: 
   DisplayPluralName: Shelves
+  SaveCode: ps
   Description: 
   Rarity: 4
   BuyBlueprintCost: 500

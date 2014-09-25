@@ -270,6 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: 
   DisplayPluralName: 
+  SaveCode: ss
   Description: 
   Rarity: 4
   BuyBlueprintCost: 0

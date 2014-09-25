@@ -7,9 +7,9 @@ public class Tile : MonoBehaviour
 
 	public enum TileType
 	{
-		Interior,
-		Exterior,
-		Empty
+		Interior = 'i',
+		Exterior = 'e',
+		Empty = 'n'
 	}
 
 	public enum TileRarity
@@ -21,6 +21,7 @@ public class Tile : MonoBehaviour
 
 	public string DisplayName = "";
 	public string DisplayPluralName = "";
+	public string SaveCode = "t";
 
 	[TextArea]
 	public string Description = "";

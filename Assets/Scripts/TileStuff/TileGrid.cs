@@ -313,8 +313,11 @@ public class TileGrid : MonoBehaviour
 			for (int y = 0; y < grid.GetLength(1); y++)
 			{
 				if (grid[x, y] == null)
+				{
 					continue;
-				s += x + "," + y + "," + grid[x,y].name + "," + grid[x,y].type + "," + grid[x,y].Save() + ";";
+				}
+				Tile t = grid[x, y];
+				s += t.X + "," + t.Y + "," + t.SaveCode + "," + (char)t.type + "," + t.Save() + ";";
 			}
 		}
 		return s;
@@ -339,13 +342,13 @@ public class TileGrid : MonoBehaviour
 			int x = int.Parse(commasplit[0]);
 			int y = int.Parse(commasplit[1]);
 
-			string tilename = commasplit[2];
-			Tile.TileType type = (Tile.TileType)System.Enum.Parse(typeof(Tile.TileType), commasplit[3]);
+			string tilecode = commasplit[2];
+			Tile.TileType type = (Tile.TileType)commasplit[3][0];
 
 			string[] args = new string[commasplit.Length - numreserved];
 			System.Array.Copy(commasplit, numreserved, args, 0, args.Length);
 
-			Tile prefab = possibleTiles.First(item => item.name == tilename);
+			Tile prefab = possibleTiles.First(item => item.SaveCode == tilecode);
 			Tile tile = SetTile(new Tile[] { prefab }, x, y, type);
 			tile.Load(args);
 		}

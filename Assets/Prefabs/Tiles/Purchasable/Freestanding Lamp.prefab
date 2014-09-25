@@ -320,6 +320,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DisplayName: 
   DisplayPluralName: 
+  SaveCode: pl
   Description: 
   Rarity: 4
   BuyBlueprintCost: 200

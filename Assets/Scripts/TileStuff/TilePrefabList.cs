@@ -55,6 +55,14 @@ public class TilePrefabList : ScriptableObject {
 		return returnlist;
 	}
 
+	public List<Tile> GetAllTiles()
+	{
+		List<Tile> ret = new List<Tile>();
+		ret.AddRange(BasicTiles);
+		ret.AddRange(PurchasableTiles);
+		ret.AddRange(SystemTiles);
+		return ret;
+	}
 
 
 #if UNITY_EDITOR
