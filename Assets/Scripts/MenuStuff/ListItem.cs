@@ -8,6 +8,8 @@ public class ListItem : MonoBehaviour {
 	public object Data;
 
 	public UILabel[] Labels = new UILabel[0];
+
+	public GameObject[] GameObjects = new GameObject[0];
 	
 	public ButtonCallback Button0Clicked;
 	public ButtonCallback Button1Clicked;
