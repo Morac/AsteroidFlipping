@@ -7,10 +7,8 @@ public class ListItem : MonoBehaviour {
 
 	public object Data;
 
-	public UILabel Label0;
-	public UILabel Label1;
-	public UILabel Label2;
-
+	public UILabel[] Labels = new UILabel[0];
+	
 	public ButtonCallback Button0Clicked;
 	public ButtonCallback Button1Clicked;
 	public ButtonCallback Button2Clicked;

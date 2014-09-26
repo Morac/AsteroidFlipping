@@ -12,7 +12,7 @@ public class AsteroidTravelList : GenericUIList
 	protected override void OnListItemCreate(ListItem item)
 	{
 		item.Button0Clicked += Travel;
-		item.Label0.text = (string)item.Data;
+		item.Labels[0].text = (string)item.Data;
 	}
 
 	void Travel(ListItem item)
