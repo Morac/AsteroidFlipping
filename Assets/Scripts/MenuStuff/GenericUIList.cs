@@ -24,6 +24,16 @@ public abstract class GenericUIList : MonoBehaviour {
 		return string.Compare(a.name, b.name);
 	}
 
+	public virtual List<string> LabelNames()
+	{
+		return null;
+	}
+
+	public virtual List<string> GroupNames()
+	{
+		return null;
+	}
+
 	void OnEnable()
 	{
 		foreach(var data in ListData())

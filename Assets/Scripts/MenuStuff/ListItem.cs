@@ -1,23 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
-public class ListItem : MonoBehaviour {
+public class ListItem : MonoBehaviour
+{
 
 	public delegate void ButtonCallback(ListItem source);
 
 	public object Data;
 
-	public UILabel[] Labels = new UILabel[0];
+	public List<UILabel> Labels = new List<UILabel>();
 
-	public GameObject[] GameObjects = new GameObject[0];
-	
+	public List<GameObject> GameObjects = new List<GameObject>();
+
 	public ButtonCallback Button0Clicked;
 	public ButtonCallback Button1Clicked;
 	public ButtonCallback Button2Clicked;
 
 	public void Click0()
 	{
-		if(Button0Clicked != null)
+		if (Button0Clicked != null)
 			Button0Clicked(this);
 	}
 
