@@ -25,7 +25,7 @@ public class ListItemEditor : Editor
 			{
 				if (item.Labels.Count <= i)
 					item.Labels.Add(null);
-				item.Labels[i] = EditorGUILayout.ObjectField(list.LabelNames()[i], item.Labels[i], typeof(UILabel)) as UILabel;
+				item.Labels[i] = EditorGUILayout.ObjectField(list.LabelNames()[i], item.Labels[i], typeof(UILabel), true) as UILabel;
 			}
 		}
 
@@ -42,7 +42,7 @@ public class ListItemEditor : Editor
 			{
 				if (item.Labels.Count <= i)
 					item.Labels.Add(null);
-				item.Labels[i + n] = EditorGUILayout.ObjectField(item.Labels[i + n], typeof(UILabel)) as UILabel;
+				item.Labels[i + n] = EditorGUILayout.ObjectField(item.Labels[i + n], typeof(UILabel), true) as UILabel;
 			}
 
 			if (newsize > therest)
@@ -76,7 +76,7 @@ public class ListItemEditor : Editor
 			{
 				if (item.GameObjects.Count <= i)
 					item.GameObjects.Add(null);
-				item.GameObjects[i] = EditorGUILayout.ObjectField(list.GroupNames()[i], item.GameObjects[i], typeof(GameObject)) as GameObject;
+				item.GameObjects[i] = EditorGUILayout.ObjectField(list.GroupNames()[i], item.GameObjects[i], typeof(GameObject), true) as GameObject;
 			}
 		}
 
@@ -94,7 +94,7 @@ public class ListItemEditor : Editor
 			{
 				if (item.GameObjects.Count <= i)
 					item.GameObjects.Add(null);
-				item.GameObjects[i + n] = EditorGUILayout.ObjectField(item.GameObjects[i + n], typeof(GameObject)) as GameObject;
+				item.GameObjects[i + n] = EditorGUILayout.ObjectField(item.GameObjects[i + n], typeof(GameObject), true) as GameObject;
 			}
 
 			if(newsize > thereset)

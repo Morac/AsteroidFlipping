@@ -52,18 +52,42 @@ public static class GlobalSettings
 	}
 
 	public const string ContractsSaveFileName = "Contracts.txt";
+	public const string DataSaveFileName = "Data.txt";
 
 	public static bool IsReservedName(string file)
 	{
 		bool r = false;
 		r |= System.IO.Path.GetFileName(file) == ContractsSaveFileName;
+		r |= System.IO.Path.GetFileName(file) == DataSaveFileName;
 		return r;
+	}
+
+	public static void SaveData()
+	{
+		System.IO.StreamWriter writer = new System.IO.StreamWriter(SavePath + DataSaveFileName);
+
+		writer.WriteLine(TimeManager.Instance.Save());
+
+		writer.Close();
+	}
+
+	public static void LoadData()
+	{
+		if (!System.IO.File.Exists(SavePath + DataSaveFileName))
+			return;
+
+		System.IO.StreamReader reader = new System.IO.StreamReader(SavePath + DataSaveFileName);
+
+		string timedata = reader.ReadLine();
+		TimeManager.Instance.Load(timedata);
+
+		reader.Close();
 	}
 
 	#region EconomyVariables
 	public const int BaseContractPayout = 10;
 	public const int ContractVariation = 2;
-	public const float ChanceOfRequirementExclusion = 1f / 6f;
+	public const float ChanceOfRequirementExclusion = 1f / 6f; //chance that a requirement is "None of [tile]"
 
 	#endregion
 

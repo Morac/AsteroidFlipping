@@ -6,7 +6,7 @@ public abstract class GenericUIList : MonoBehaviour {
 
 	public ListItem ListItemPrefab;
 
-	List<ListItem> listitems = new List<ListItem>();
+	public List<ListItem> ListItems = new List<ListItem>();
 
 	UIGrid _grid;
 	protected UIGrid Grid
@@ -34,7 +34,7 @@ public abstract class GenericUIList : MonoBehaviour {
 		return null;
 	}
 
-	void OnEnable()
+	protected virtual void OnEnable()
 	{
 		foreach(var data in ListData())
 		{
@@ -50,7 +50,7 @@ public abstract class GenericUIList : MonoBehaviour {
 		var item = Instantiate(ListItemPrefab, transform.position, transform.rotation) as ListItem;
 		item.transform.parent = transform;
 		item.transform.localScale = Vector3.one;
-		listitems.Add(item);
+		ListItems.Add(item);
 		item.Data = data;
 
 		OnListItemCreate(item);
@@ -58,11 +58,11 @@ public abstract class GenericUIList : MonoBehaviour {
 
 	protected abstract void OnListItemCreate(ListItem item);
 
-	void OnDisable()
+	protected virtual void OnDisable()
 	{
-		if (listitems == null)
+		if (ListItems == null)
 			return;
-		foreach(var item in listitems)
+		foreach(var item in ListItems)
 		{
 			if (item == null)
 				continue;

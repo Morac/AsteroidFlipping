@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public static class ContractManager
+public class ContractManager : Singleton<ContractManager>
 {
+	public delegate void ContractCreationCallback(Contract c);
+	public static ContractCreationCallback OnContractCreated;
+	const int MaxContracts = 6;
+
 	static List<Contract> _contracts;
 	public static List<Contract> Contracts
 	{
@@ -33,7 +37,7 @@ public static class ContractManager
 		writer.Close();
 	}
 
-	static void LoadContracts()
+	public static void LoadContracts()
 	{
 		string path = GlobalSettings.SavePath + GlobalSettings.ContractsSaveFileName;
 		if (System.IO.File.Exists(path) == false)
@@ -51,6 +55,18 @@ public static class ContractManager
 		reader.Close();
 	}
 
+
+	void Update()
+	{
+		if(Contracts.Count < MaxContracts)
+		{
+			var contract = Contract.GenerateRandomContract();
+			_contracts.Add(contract);
+			if(OnContractCreated != null)
+				OnContractCreated(contract);
+		}
+	}
+
 	static void GenerateContracts()
 	{
 		_contracts = new List<Contract>();
@@ -61,6 +77,7 @@ public static class ContractManager
 		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Large, Contract.ContractType.Housing));
 		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Large, Contract.ContractType.Housing));
 	}
+
 
 #if UNITY_EDITOR
 	[UnityEditor.MenuItem("Utils/Test contract manager")]

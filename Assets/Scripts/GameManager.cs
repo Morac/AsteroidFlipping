@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
 
 	public void Load(string asteroidname)
 	{
+		Debug.Log("loading " + asteroidname);
 		AsteroidName = asteroidname;
 		string path = SavePath(asteroidname);
 		System.IO.StreamReader reader = new System.IO.StreamReader(path);

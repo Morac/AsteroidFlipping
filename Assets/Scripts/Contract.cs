@@ -23,7 +23,18 @@ public class Contract
 
 	public ContractType Type { get; private set; }
 	public ContractSize Size { get; private set; }
-	public int Payout { get; private set; }
+	public int Payout = 0;
+	public int BidEndTime = 0;
+	public string LowBidder = "";
+	public int ReservedBid = 0;
+
+	public bool BiddingEnded
+	{
+		get
+		{
+			return BidEndTime < TimeManager.Now;
+		}
+	}
 
 	public List<Requirement> Requirements = new List<Requirement>();
 
@@ -39,6 +50,17 @@ public class Contract
 		return true;
 	}
 
+	public static Contract GenerateRandomContract()
+	{
+		var sizear = System.Enum.GetValues(typeof(ContractSize));
+		var size = (ContractSize)sizear.GetValue(Random.Range(0, sizear.Length));
+
+		var typear = System.Enum.GetValues(typeof(ContractType));
+		var type = (ContractType)typear.GetValue(Random.Range(0, typear.Length));
+
+		return GenerateRandomContract(size, type);
+	}
+
 	public static Contract GenerateRandomContract(ContractSize size, ContractType type)
 	{
 		Contract contract = new Contract();
@@ -52,6 +74,8 @@ public class Contract
 			if (requirement != null)
 				contract.Requirements.Add(requirement);
 		}
+
+		contract.BidEndTime = TimeManager.Now + 5 * 60;
 
 		return contract;
 	}
@@ -305,7 +329,7 @@ public class Contract
 	public string Save()
 	{
 		string s = "";
-		s += Size + "," + Type + "," + Payout;
+		s += Size + "," + Type + "," + Payout + "," + BidEndTime + "," + LowBidder + "," + ReservedBid;
 		foreach(var r in Requirements)
 		{
 			s += "," + r.Save();
@@ -320,7 +344,11 @@ public class Contract
 		c.Size = (ContractSize)System.Enum.Parse(typeof(ContractSize), split[0]);
 		c.Type = (ContractType)System.Enum.Parse(typeof(ContractType), split[1]);
 		c.Payout = int.Parse(split[2]);
-		for (int i = 3; i < split.Length; i++)
+		c.BidEndTime = int.Parse(split[3]);
+		c.LowBidder = split[4];
+		c.ReservedBid = int.Parse(split[5]);
+		
+		for (int i = 6; i < split.Length; i++)
 		{
 			c.Requirements.Add(Requirement.Load(split[i]));
 		}
@@ -328,6 +356,7 @@ public class Contract
 		return c;
 	}
 
+#if UNITY_EDITOR
 	[UnityEditor.MenuItem("Utils/Generate Contract test")]
 	static void test()
 	{
@@ -339,5 +368,6 @@ public class Contract
 		Contract c2 = Load(s);
 		Debug.Log(c2.ToString());
 	}
+#endif
 
 }
