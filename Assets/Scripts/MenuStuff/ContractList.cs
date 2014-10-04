@@ -133,7 +133,7 @@ public class ContractList : GenericUIList
 					item.GameObjects[(int)Groups.Bidding].SetActive(false);
 					item.GameObjects[(int)Groups.Completion].SetActive(true);
 				}
-				else
+				else if(data.LowBidder != "You")
 				{
 					ContractManager.Contracts.Remove(data);
 					Destroy(item.gameObject);
