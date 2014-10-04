@@ -337,9 +337,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac9afa7e3c9dc14d90c9a3329186ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Label0: {fileID: 11400002}
-  Label1: {fileID: 11400000}
-  Label2: {fileID: 0}
+  Labels:
+  - {fileID: 11400002}
+  - {fileID: 11400000}
+  GameObjects: []
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

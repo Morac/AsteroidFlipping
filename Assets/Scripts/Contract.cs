@@ -50,6 +50,47 @@ public class Contract
 		return true;
 	}
 
+	public bool Bid(string bidder, int amount)
+	{
+
+		bool bidsuccessful = false;
+
+		if(amount <= 0)
+		{
+			bidsuccessful = false;
+		}
+		else if (LowBidder == bidder && amount < ReservedBid)
+		{
+			ReservedBid = amount;
+			bidsuccessful = true;
+		}
+		else if (ReservedBid > 0)
+		{
+			if (amount < ReservedBid)
+			{
+				bidsuccessful = true;
+				Payout = ReservedBid--;
+				ReservedBid = amount;
+				LowBidder = bidder;
+			}
+			else
+			{
+				Payout = amount;
+				bidsuccessful = false;
+			}
+		}
+		else if (amount < Payout)
+		{
+			Payout--;
+			ReservedBid = amount;
+			LowBidder = bidder;
+			bidsuccessful = true;
+		}
+
+
+		return bidsuccessful;
+	}
+
 	public static Contract GenerateRandomContract()
 	{
 		var sizear = System.Enum.GetValues(typeof(ContractSize));
@@ -105,6 +146,7 @@ public class Contract
 		}
 	}
 
+	#region requirements
 	public abstract class Requirement
 	{
 		public abstract float Chance();
@@ -324,6 +366,8 @@ public class Contract
 			throw new System.NotImplementedException();
 		}
 	}
+
+	#endregion
 
 
 	public string Save()

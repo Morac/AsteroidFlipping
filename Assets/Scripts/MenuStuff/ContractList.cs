@@ -3,7 +3,8 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 
-public class ContractList : GenericUIList {
+public class ContractList : GenericUIList
+{
 
 	public enum Labels
 	{
@@ -13,7 +14,8 @@ public class ContractList : GenericUIList {
 		AutoBid,
 		CurrentBid,
 		TimeLeft,
-		Payout
+		Payout,
+		BiddingField
 	}
 
 	public override List<string> LabelNames()
@@ -32,7 +34,7 @@ public class ContractList : GenericUIList {
 		return System.Enum.GetNames(typeof(Groups)).ToList();
 	}
 
-	
+
 	protected override System.Collections.Generic.List<object> ListData()
 	{
 		return ContractManager.Contracts.Cast<object>().ToList();
@@ -52,11 +54,18 @@ public class ContractList : GenericUIList {
 
 	protected override void OnListItemCreate(ListItem item)
 	{
+		RefreshInfo(item);
+		item.Button0Clicked	= BidButtonClicked;
+		GetComponent<UIGrid>().Reposition();
+	}
+
+	void RefreshInfo(ListItem item)
+	{
 		var data = item.Data as Contract;
 		item.Labels[(int)Labels.Name].text = data.Type.ToString();
 
 		string requirements = "";
-		foreach(var r in data.Requirements)
+		foreach (var r in data.Requirements)
 		{
 			requirements += r.ToString() + "\n";
 		}
@@ -64,8 +73,17 @@ public class ContractList : GenericUIList {
 		item.Labels[(int)Labels.LowBid].text = Bidtext(data.LowBidder, data.Payout);
 		item.Labels[(int)Labels.TimeLeft].text = Timeremaining(data.BidEndTime - TimeManager.Now);
 
+		string reservedtext = "";
+		if(data.LowBidder == "You")
+		{
+			reservedtext = "Reserved bid - " + GlobalSettings.Currency + data.ReservedBid;
+		}
+		item.Labels[(int)Labels.AutoBid].text = reservedtext;
+
 		item.GameObjects[(int)Groups.Bidding].SetActive(!data.BiddingEnded);
 		item.GameObjects[(int)Groups.Completion].SetActive(data.BiddingEnded);
+
+
 	}
 
 	string Bidtext(string bidder, int payout)
@@ -80,16 +98,16 @@ public class ContractList : GenericUIList {
 	{
 		int t = time;
 		string s = "Bidding ends in ";
-		
+
 		int h = t / (60 * 60);
-		if(h > 0)
+		if (h > 0)
 		{
 			s += h + "h ";
 			t %= (60 * 60);
 		}
 
 		int m = t / 60;
-		if(m > 0)
+		if (m > 0)
 		{
 			s += m + "m ";
 			t %= 60;
@@ -103,14 +121,14 @@ public class ContractList : GenericUIList {
 
 	void Update()
 	{
-		foreach(var item in ListItems)
+		foreach (var item in ListItems)
 		{
 			if (item == null)
 				continue;
 			var data = item.Data as Contract;
-			if(data.BiddingEnded)
+			if (data.BiddingEnded)
 			{
-				if(data.LowBidder == "You" && item.GameObjects[(int)Groups.Bidding].activeSelf)
+				if (data.LowBidder == "You" && item.GameObjects[(int)Groups.Bidding].activeSelf)
 				{
 					item.GameObjects[(int)Groups.Bidding].SetActive(false);
 					item.GameObjects[(int)Groups.Completion].SetActive(true);
@@ -129,5 +147,23 @@ public class ContractList : GenericUIList {
 		}
 
 		ListItems.RemoveAll(item => item == null);
+	}
+
+	void BidButtonClicked(ListItem item)
+	{
+		var contract = item.Data as Contract;
+
+		string bidamtstr = item.Labels[(int)Labels.BiddingField].text;
+		int bidamount = int.Parse(bidamtstr);
+
+
+		if (contract.Bid("You", bidamount))
+		{
+			OnListItemCreate(item);
+		}
+		else
+		{
+			item.Labels[(int)Labels.BiddingField].text = "Bid unsuccessful";
+		}
 	}
 }
