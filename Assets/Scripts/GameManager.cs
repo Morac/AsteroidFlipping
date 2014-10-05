@@ -20,6 +20,7 @@ public class GameManager : Singleton<GameManager>
 
 	public string AsteroidName = "";
 	public TileGrid tileGrid;
+	public bool Sold = false;
 
 	public delegate void AsteroidValueChanged(int newvalue);
 	public static AsteroidValueChanged AsteroidValueCallback;
@@ -77,10 +78,12 @@ public class GameManager : Singleton<GameManager>
 	{
 		string path = SavePath(AsteroidName);
 		System.IO.StreamWriter writer = new System.IO.StreamWriter(path);
+		writer.WriteLine(Sold.ToString());
 
 		writer.WriteLine(Random.seed);
 		var pos = tileGrid.player.transform.position;
 		writer.WriteLine(pos.x + "," + pos.y + "," + pos.z);
+
 
 		string s = tileGrid.Save();
 		writer.WriteLine(s);
@@ -94,6 +97,7 @@ public class GameManager : Singleton<GameManager>
 		AsteroidName = asteroidname;
 		string path = SavePath(asteroidname);
 		System.IO.StreamReader reader = new System.IO.StreamReader(path);
+		Sold = bool.Parse(reader.ReadLine());
 
 		Random.seed = int.Parse(reader.ReadLine());
 
@@ -102,6 +106,7 @@ public class GameManager : Singleton<GameManager>
 		float y = float.Parse(pos[1]);
 		float z = float.Parse(pos[2]);
 		tileGrid.player.transform.position = new Vector3(x, y, z);
+
 
 		tileGrid.Load(reader.ReadLine());
 

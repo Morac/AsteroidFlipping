@@ -5,6 +5,10 @@ using System.Collections.Generic;
 
 public class ContractList : GenericUIList
 {
+	public GameObject TravelScreen;
+	public GameObject TravelScreenCloseButton;
+	public GameObject ContractScreen;
+
 
 	public enum Labels
 	{
@@ -55,7 +59,8 @@ public class ContractList : GenericUIList
 	protected override void OnListItemCreate(ListItem item)
 	{
 		RefreshInfo(item);
-		item.Button0Clicked	= BidButtonClicked;
+		item.Button0Clicked = BidButtonClicked;
+		item.Button1Clicked = CompleteButtonClicked;
 		GetComponent<UIGrid>().Reposition();
 	}
 
@@ -74,11 +79,14 @@ public class ContractList : GenericUIList
 		item.Labels[(int)Labels.TimeLeft].text = Timeremaining(data.BidEndTime - TimeManager.Now);
 
 		string reservedtext = "";
-		if(data.LowBidder == "You")
+		if (data.LowBidder == "You")
 		{
 			reservedtext = "Reserved bid - " + GlobalSettings.Currency + data.ReservedBid;
 		}
 		item.Labels[(int)Labels.AutoBid].text = reservedtext;
+
+		item.Labels[(int)Labels.Payout].text = GlobalSettings.Currency + data.Payout.ToString();
+
 
 		item.GameObjects[(int)Groups.Bidding].SetActive(!data.BiddingEnded);
 		item.GameObjects[(int)Groups.Completion].SetActive(data.BiddingEnded);
@@ -133,7 +141,7 @@ public class ContractList : GenericUIList
 					item.GameObjects[(int)Groups.Bidding].SetActive(false);
 					item.GameObjects[(int)Groups.Completion].SetActive(true);
 				}
-				else if(data.LowBidder != "You")
+				else if (data.LowBidder != "You")
 				{
 					ContractManager.Contracts.Remove(data);
 					Destroy(item.gameObject);
@@ -159,11 +167,26 @@ public class ContractList : GenericUIList
 
 		if (contract.Bid("You", bidamount))
 		{
-			OnListItemCreate(item);
+			RefreshInfo(item);
 		}
 		else
 		{
 			item.Labels[(int)Labels.BiddingField].text = "Bid unsuccessful";
+		}
+	}
+
+	void CompleteButtonClicked(ListItem item)
+	{
+		var contract = item.Data as Contract;
+
+		if (contract.Evaluate(GameManager.Instance.tileGrid.grid))
+		{
+			PlayerInventory.Funds += contract.Payout;
+			ContractManager.Contracts.Remove(contract);
+			GameManager.Instance.Sold = true;
+			ContractScreen.SetActive(false);
+			TravelScreen.SetActive(true);
+			TravelScreenCloseButton.SetActive(false);
 		}
 	}
 }
