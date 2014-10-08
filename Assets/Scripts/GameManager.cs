@@ -12,8 +12,8 @@ public class GameManager : Singleton<GameManager>
 		DefaultLoad
 	}
 
-	public static LevelStartAction OnLevelStart = LevelStartAction.DefaultLoad;
-	//public static LevelStartAction OnLevelStart = LevelStartAction.DefaultGenerate;
+	//public static LevelStartAction OnLevelStart = LevelStartAction.DefaultLoad;
+	public static LevelStartAction OnLevelStart = LevelStartAction.DefaultGenerate;
 	static string _asteroidName = "";
 	static int _seed = 0;
 	static float _size = 0;
