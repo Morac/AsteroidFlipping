@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf4de6abb2170248a5c4f2952cee734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: 3
+  item: 1
   count: 1
 --- !u!122 &12200000
 Halo:

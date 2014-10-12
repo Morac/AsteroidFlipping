@@ -53,29 +53,32 @@ public class Contract
 
 	public bool Bid(string bidder, int amount)
 	{
+		bool log = false;
 
+		if(log) Debug.Log("Bid attempt by " + bidder + " for " + amount);
 		bool bidsuccessful = false;
 
 		if(amount <= 0)
 		{
+			if (log) Debug.Log("Bid fail: amount <= 0");
 			bidsuccessful = false;
 		}
 		else if (LowBidder == bidder && amount < ReservedBid)
 		{
-			ReservedBid = amount;
+			if (log) Debug.Log("Bid succeed: updated reserve amount");
 			bidsuccessful = true;
 		}
-		else if (LowBidder != bidder)
+		else if (LowBidder != "" && LowBidder != bidder)
 		{
 			if (ReservedBid > 0 && amount < ReservedBid)
 			{
+				if (log) Debug.Log("Bid succeed: beat previous bid by " + LowBidder);
+				Payout = ReservedBid - 1;
 				bidsuccessful = true;
-				Payout = ReservedBid--;
-				ReservedBid = amount;
-				LowBidder = bidder;
 			}
 			else
 			{
+				if (log) Debug.Log("Bid fail: not low enough to beat " + Payout + " from " + LowBidder);
 				if(amount < Payout && amount >= ReservedBid)
 					Payout = amount;
 				bidsuccessful = false;
@@ -83,12 +86,16 @@ public class Contract
 		}
 		else if (LowBidder == "" && amount < Payout)
 		{
+			if (log) Debug.Log("Bid succeed: no other bids");
 			Payout--;
-			ReservedBid = amount;
-			LowBidder = bidder;
 			bidsuccessful = true;
 		}
 
+		if(bidsuccessful)
+		{
+			LowBidder = bidder;
+			ReservedBid = amount;
+		}
 
 		return bidsuccessful;
 	}
@@ -119,7 +126,7 @@ public class Contract
 				contract.Requirements.Add(requirement);
 		}
 
-		contract.BidEndTime = TimeManager.Now + 5 * 60;
+		contract.BidEndTime = TimeManager.Now + Random.Range(GlobalSettings.ContractTimeMin, GlobalSettings.ContractTimeMax) * GlobalSettings.ContractTimeIncr;
 
 		return contract;
 	}
@@ -152,7 +159,7 @@ public class Contract
 	#region requirements
 	public abstract class Requirement
 	{
-		public abstract float Chance();
+		public abstract float Chance(List<Requirement> existing);
 		public abstract bool Pass(Tile[,] grid);
 		public abstract Requirement Create(ContractSize size, ContractType type, List<Requirement> existing);
 		public abstract string SaveCode();
@@ -163,8 +170,12 @@ public class Contract
 		public static Requirement Load(string s)
 		{
 			string[] split = s.Split('.');
-			
-			foreach(var type in Subclasses)
+
+			var possible = new List<Requirement>();
+			possible.AddRange(RequiredSubclasses);
+			possible.AddRange(Subclasses);
+
+			foreach(var type in possible)
 			{
 				if(split[0] == type.SaveCode())
 				{
@@ -176,24 +187,36 @@ public class Contract
 			return null;
 		}
 
+		public static List<Requirement> RequiredSubclasses = new List<Requirement>()
+		{
+			new ValueRequirement()
+		};
 		public static List<Requirement> Subclasses = new List<Requirement>()
 		{
 			new TileRequirement(),
 			new TileExclusionRequirement(),
-			new RoomRequirement()
+			//new RoomRequirement()
 		};
 
 		public static Requirement GetRandomRequirement(ContractSize size, ContractType t, List<Requirement> existingRequirements)
 		{
+			foreach(var req in RequiredSubclasses)
+			{
+				if(!existingRequirements.Any(item => item.SaveCode() == req.SaveCode()))
+				{
+					return req.Create(size, t, existingRequirements);
+				}
+			}
+
 			float sum = 0;
 			foreach(var type in Subclasses)
 			{
-				sum += type.Chance();
+				sum += type.Chance(existingRequirements);
 			}
 			float r = Random.Range(0, sum);
 			foreach(var type in Subclasses)
 			{
-				r -= type.Chance();
+				r -= type.Chance(existingRequirements);
 				if (r <= 0)
 					return type.Create(size, t, existingRequirements);
 			}
@@ -207,7 +230,7 @@ public class Contract
 		public int count;
 		public Tile tile;
 
-		public override float Chance()
+		public override float Chance(List<Requirement> existing)
 		{
 			return 5f / 6f;
 		}
@@ -275,7 +298,7 @@ public class Contract
 	{
 		public Tile tile;
 
-		public override float Chance()
+		public override float Chance(List<Requirement> existing)
 		{
 			return 1f / 6f;
 		}
@@ -334,11 +357,65 @@ public class Contract
 		}
 	}
 
+	public class ValueRequirement : Requirement
+	{
+		public int Value;
+
+		public override float Chance(List<Requirement> existing)
+		{
+			return 0;
+		}
+
+		public override Requirement Create(ContractSize size, ContractType type, List<Requirement> existing)
+		{
+			ValueRequirement vr = new ValueRequirement();
+			int r = Random.Range(-GlobalSettings.AsteroidValueVariation, GlobalSettings.AsteroidValueVariation + 1) * GlobalSettings.AsteroidValueIncrement * (int)size;
+			vr.Value = (int)size * GlobalSettings.AsteroidValueMod + r;
+			return vr;
+		}
+
+		public override bool Pass(Tile[,] grid)
+		{
+			var total = 0;
+			foreach(var tile in grid)
+			{
+				if(tile != null)
+				{
+					var val = tile.GetComponent<Valuable>();
+					if (val)
+						total += val.value;
+				}
+			}
+
+			return total >= Value;
+		}
+
+		public override string SaveCode()
+		{
+			return "vr";
+		}
+
+		public override string Save()
+		{
+			return SaveCode() + "." + Value.ToString();
+		}
+
+		protected override void LoadData(string[] s)
+		{
+			int.TryParse(s[1], out Value);
+		}
+
+		public override string ToString()
+		{
+			return "Asteroid Value at least " + GlobalSettings.Currency + Value;
+		}
+	}
+
 	public class RoomRequirement : Requirement
 	{
 		public int count;
 
-		public override float Chance()
+		public override float Chance(List<Requirement> existing)
 		{
 			return 0;
 		}

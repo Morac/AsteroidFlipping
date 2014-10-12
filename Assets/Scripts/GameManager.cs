@@ -63,7 +63,14 @@ public class GameManager : Singleton<GameManager>
 				tileGrid.Generate();
 				break;
 			case LevelStartAction.DefaultLoad:
-				Load(CurrentAsteroids().First());
+				var list = CurrentAsteroids();
+				if(list.Count > 0)
+					Load(list.First());
+				else
+				{
+					AsteroidName = "Asteroid" + Random.seed;
+					tileGrid.Generate();
+				}
 				break;
 		}
 	}
@@ -96,7 +103,8 @@ public class GameManager : Singleton<GameManager>
 		AsteroidName = asteroidname;
 		string path = SavePath(asteroidname);
 		System.IO.StreamReader reader = new System.IO.StreamReader(path);
-		Sold = bool.Parse(reader.ReadLine());
+		string s = reader.ReadLine();
+		Sold = string.IsNullOrEmpty(s) || bool.Parse(s);
 
 		Random.seed = int.Parse(reader.ReadLine());
 
@@ -122,8 +130,12 @@ public class GameManager : Singleton<GameManager>
 			{
 				string mod = System.IO.Path.GetFileNameWithoutExtension(file);
 				System.IO.StreamReader reader = new System.IO.StreamReader(GameManager.SavePath(mod));
-				if (bool.Parse(reader.ReadLine()) == false)
+				string b = reader.ReadLine();
+				if (!string.IsNullOrEmpty(b) && bool.Parse(b) == false)
 					r.Add(mod);
+				else if (string.IsNullOrEmpty(b))
+					System.IO.File.Delete(GameManager.SavePath(mod));
+				reader.Close();
 			}
 		}
 		return r;

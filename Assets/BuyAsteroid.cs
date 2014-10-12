@@ -3,7 +3,13 @@ using System.Collections;
 
 public class BuyAsteroid : MonoBehaviour
 {
-	public int BuyCost = 200;
+	public int BuyCost
+	{
+		get
+		{
+			return GlobalSettings.AsteroidBuyCost;
+		}
+	}
 
 	UILabel _label;
 	UILabel label

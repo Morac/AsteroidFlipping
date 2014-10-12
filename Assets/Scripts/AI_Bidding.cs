@@ -30,7 +30,10 @@ public class AI_Bidding : MonoBehaviour
 		{
 			int bidamt = GetBid(contract.StartingAmount);
 			if (contract.Bid(company, bidamt))
+			{
+				Debug.Log(company + " has bid " + bidamt + " on a contract");
 				break;
+			}
 		}
 	}
 

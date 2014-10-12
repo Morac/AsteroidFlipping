@@ -89,6 +89,16 @@ public static class GlobalSettings
 	public const int ContractVariation = 2;
 	public const float ChanceOfRequirementExclusion = 1f / 6f; //chance that a requirement is "None of [tile]"
 
+	public const int AsteroidValueMod = 1000;
+	public const int AsteroidValueIncrement = 100;
+	public const int AsteroidValueVariation = 2;
+
+	public const int ContractTimeIncr = 60;
+	public const int ContractTimeMin = 5;
+	public const int ContractTimeMax = 10;
+
+	public const int AsteroidBuyCost = 10;
+
 	#endregion
 
 #if UNITY_EDITOR
