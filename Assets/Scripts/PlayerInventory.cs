@@ -13,8 +13,6 @@ public static class PlayerInventory
 	public enum Item
 	{
 		Metals,
-		Organics,
-		Seeds,
 		Electronics
 	}
 

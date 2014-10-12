@@ -63,10 +63,7 @@ public class GameManager : Singleton<GameManager>
 				tileGrid.Generate();
 				break;
 			case LevelStartAction.DefaultLoad:
-				foreach(var asteroid in CurrentAsteroids())
-				{
-					
-				}
+				Load(CurrentAsteroids().First());
 				break;
 		}
 	}

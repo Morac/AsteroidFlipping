@@ -10,6 +10,7 @@ public class DisableCamera : MonoBehaviour
 
 	void OnDisable()
 	{
-		Player.Instance.Controller.enabled = true;
+		if(Player.Instance != null)
+			Player.Instance.Controller.enabled = true;
 	}
 }

@@ -23,6 +23,7 @@ public class Contract
 
 	public ContractType Type { get; private set; }
 	public ContractSize Size { get; private set; }
+	public int StartingAmount = 0;
 	public int Payout = 0;
 	public int BidEndTime = 0;
 	public string LowBidder = "";
@@ -64,9 +65,9 @@ public class Contract
 			ReservedBid = amount;
 			bidsuccessful = true;
 		}
-		else if (ReservedBid > 0)
+		else if (LowBidder != bidder)
 		{
-			if (amount < ReservedBid)
+			if (ReservedBid > 0 && amount < ReservedBid)
 			{
 				bidsuccessful = true;
 				Payout = ReservedBid--;
@@ -75,11 +76,12 @@ public class Contract
 			}
 			else
 			{
-				Payout = amount;
+				if(amount < Payout && amount >= ReservedBid)
+					Payout = amount;
 				bidsuccessful = false;
 			}
 		}
-		else if (amount < Payout)
+		else if (LowBidder == "" && amount < Payout)
 		{
 			Payout--;
 			ReservedBid = amount;
@@ -108,6 +110,7 @@ public class Contract
 		contract.Type = type;
 		contract.Size = size;
 		contract.Payout = GlobalSettings.BaseContractPayout * (int)size + Random.Range(-GlobalSettings.ContractVariation, GlobalSettings.ContractVariation);
+		contract.StartingAmount = contract.Payout;
 
 		for (int i = 0; i < NumRequirements(size); i++)
 		{
@@ -377,7 +380,7 @@ public class Contract
 	public string Save()
 	{
 		string s = "";
-		s += Size + "," + Type + "," + Payout + "," + BidEndTime + "," + LowBidder + "," + ReservedBid;
+		s += Size + "," + Type + "," + Payout + "," + StartingAmount + "," + BidEndTime + "," + LowBidder + "," + ReservedBid;
 		foreach(var r in Requirements)
 		{
 			s += "," + r.Save();
@@ -392,11 +395,12 @@ public class Contract
 		c.Size = (ContractSize)System.Enum.Parse(typeof(ContractSize), split[0]);
 		c.Type = (ContractType)System.Enum.Parse(typeof(ContractType), split[1]);
 		c.Payout = int.Parse(split[2]);
-		c.BidEndTime = int.Parse(split[3]);
-		c.LowBidder = split[4];
-		c.ReservedBid = int.Parse(split[5]);
+		c.StartingAmount = int.Parse(split[3]);
+		c.BidEndTime = int.Parse(split[4]);
+		c.LowBidder = split[5];
+		c.ReservedBid = int.Parse(split[6]);
 		
-		for (int i = 6; i < split.Length; i++)
+		for (int i = 7; i < split.Length; i++)
 		{
 			c.Requirements.Add(Requirement.Load(split[i]));
 		}
