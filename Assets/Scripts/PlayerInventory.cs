@@ -75,7 +75,10 @@ public static class PlayerInventory
 		{
 			get
 			{
-				return counts[m];
+				if (counts.ContainsKey(m))
+					return counts[m];
+				else
+					return 0;
 			}
 			set
 			{

@@ -11,10 +11,7 @@ public class AsteroidTravelList : GenericUIList
 		(
 			item =>
 			{
-				if (item == GameManager.Instance.AsteroidName)
-					return true;
-				System.IO.StreamReader reader = new System.IO.StreamReader(GameManager.SavePath(item));
-				return bool.Parse(reader.ReadLine());
+				return item == GameManager.Instance.AsteroidName;
 			}
 		);
 		return list.Cast<object>().ToList();
