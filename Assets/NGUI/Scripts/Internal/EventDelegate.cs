@@ -613,15 +613,15 @@ public class EventDelegate
 
 				if (del != null)
 				{
-					try
-					{
+					//try
+					//{
 						del.Execute();
-					}
-					catch (System.Exception ex)
-					{
-						if (ex.InnerException != null) Debug.LogError(ex.InnerException.Message);
-						else Debug.LogError(ex.Message);
-					}
+					//}
+					//catch (System.Exception ex)
+					//{
+					//	if (ex.InnerException != null) Debug.LogError(ex.InnerException.Message);
+					//	else Debug.LogError(ex.Message);
+					//}
 
 					if (i >= list.Count) break;
 					if (list[i] != del) continue;
