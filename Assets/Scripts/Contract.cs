@@ -236,6 +236,8 @@ public class Contract
 			int c = 0;
 			foreach(var t in grid)
 			{
+				if (t == null)
+					continue;
 				if(t.name == tile.name)
 				{
 					c++;
@@ -300,6 +302,8 @@ public class Contract
 		{
 			foreach(var t in grid)
 			{
+				if (t == null)
+					continue;
 				if (t.name == tile.name)
 					return false;
 			}

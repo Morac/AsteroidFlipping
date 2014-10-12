@@ -12,8 +12,8 @@ public class GameManager : Singleton<GameManager>
 		DefaultLoad
 	}
 
-	//public static LevelStartAction OnLevelStart = LevelStartAction.DefaultLoad;
-	public static LevelStartAction OnLevelStart = LevelStartAction.DefaultGenerate;
+	public static LevelStartAction OnLevelStart = LevelStartAction.DefaultLoad;
+	//public static LevelStartAction OnLevelStart = LevelStartAction.DefaultGenerate;
 	static string _asteroidName = "";
 	static int _seed = 0;
 	static float _size = 0;
@@ -63,7 +63,10 @@ public class GameManager : Singleton<GameManager>
 				tileGrid.Generate();
 				break;
 			case LevelStartAction.DefaultLoad:
-				Load(CurrentAsteroids().First());
+				foreach(var asteroid in CurrentAsteroids())
+				{
+					
+				}
 				break;
 		}
 	}
@@ -93,7 +96,6 @@ public class GameManager : Singleton<GameManager>
 
 	public void Load(string asteroidname)
 	{
-		Debug.Log("loading " + asteroidname);
 		AsteroidName = asteroidname;
 		string path = SavePath(asteroidname);
 		System.IO.StreamReader reader = new System.IO.StreamReader(path);
@@ -122,7 +124,9 @@ public class GameManager : Singleton<GameManager>
 			if (!GlobalSettings.IsReservedName(file))
 			{
 				string mod = System.IO.Path.GetFileNameWithoutExtension(file);
-				r.Add(mod);
+				System.IO.StreamReader reader = new System.IO.StreamReader(GameManager.SavePath(mod));
+				if (bool.Parse(reader.ReadLine()) == false)
+					r.Add(mod);
 			}
 		}
 		return r;
