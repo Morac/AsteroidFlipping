@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class AI_Bidding : MonoBehaviour
 {
-	const float TimeBetweenBids = 1;
+	const float TimeBetweenBids = 20;
 
 	const float MinBidPercent = 0.5f;
 
