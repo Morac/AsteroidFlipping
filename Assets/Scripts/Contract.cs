@@ -136,7 +136,7 @@ public class Contract
 		string s = Type + " Contract (" + Size + ")\n";
 		foreach(var r in Requirements)
 		{
-			s += r.ToString() + "\n";
+			s += r.ToString() + ", ";
 		}
 		s += "Payout: " + Payout;
 		return s;

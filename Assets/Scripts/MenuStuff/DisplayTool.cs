@@ -10,7 +10,7 @@ public class DisplayTool : MonoBehaviour
 	void Start()
 	{
 		label = GetComponent<UILabel>();
-		tool = FindObjectOfType<PlayerTool>();
+		tool = Player.Instance.MainTool;
 	}
 
 	void Update()

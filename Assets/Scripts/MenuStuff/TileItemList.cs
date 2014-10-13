@@ -18,7 +18,7 @@ public class TileItemList : MonoBehaviour
 			item.TileItem = tile;
 		}
 
-		FindObjectOfType<PlayerTool>().SelectedTool = Tiles[0];
+		Player.Instance.MainTool.SelectedTool = Tiles[0];
 
 		GetComponent<UIGrid>().Reposition();
 	}

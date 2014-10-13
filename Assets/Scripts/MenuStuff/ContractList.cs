@@ -44,6 +44,14 @@ public class ContractList : GenericUIList
 		return ContractManager.Contracts.Cast<object>().ToList();
 	}
 
+	protected override int SortMethod(Transform a, Transform b)
+	{
+		var c1 = a.GetComponent<ListItem>().Data as Contract;
+		var c2 = b.GetComponent<ListItem>().Data as Contract;
+		Debug.Log(c1.BidEndTime + "," + c2.BidEndTime);
+		return c1.BidEndTime > c2.BidEndTime ? 1 : -1;
+	}
+
 	protected override void OnEnable()
 	{
 		base.OnEnable();
@@ -72,8 +80,11 @@ public class ContractList : GenericUIList
 		string requirements = "";
 		foreach (var r in data.Requirements)
 		{
-			requirements += r.ToString() + "\n";
+			requirements += r.ToString() + ", ";
 		}
+
+		requirements = requirements.Substring(0, requirements.Length - 2);
+
 		item.Labels[(int)Labels.Description].text = requirements;
 		item.Labels[(int)Labels.LowBid].text = Bidtext(data.LowBidder, data.Payout);
 		item.Labels[(int)Labels.TimeLeft].text = Timeremaining(data.BidEndTime - TimeManager.Now);

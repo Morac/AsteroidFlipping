@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Name: TilePrefabList
   m_EditorClassIdentifier: 
   BasicTiles:
-  - {fileID: 11400000, guid: 2ffe69e9be0c8274b95c369ecb9d2f78, type: 2}
   - {fileID: 11400004, guid: 5c8c1fda624ee64488e4310362b5d733, type: 2}
   - {fileID: 11400000, guid: 3d69206384fc00c4d815382daa940d3a, type: 2}
   - {fileID: 11400004, guid: 46e09a545444297468578d1d88b87b06, type: 2}
@@ -23,3 +22,4 @@ MonoBehaviour:
   SystemTiles:
   - {fileID: 11400000, guid: 961ca034a0f83e043901d297c4598dd5, type: 2}
   - {fileID: 11400000, guid: c94dae60aa1e8b64c9c78d5ffe45fedf, type: 2}
+  - {fileID: 11400000, guid: 2ffe69e9be0c8274b95c369ecb9d2f78, type: 2}

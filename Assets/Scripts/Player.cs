@@ -14,4 +14,5 @@ public class Player : Singleton<Player>
 		}
 	}
 
+	public PlayerTool MainTool;
 }

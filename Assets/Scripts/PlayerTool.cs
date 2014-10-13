@@ -4,6 +4,9 @@ using System.Linq;
 
 public class PlayerTool : MonoBehaviour
 {
+	public string InputString = "Fire1";
+	public string CancelString = "Fire2";
+	public bool InvertedProgressBar = false;
 
 	Camera cam;
 
@@ -13,7 +16,11 @@ public class PlayerTool : MonoBehaviour
 		{
 			if (endTime == 0)
 				return 0;
-			return Mathf.Max(0, 1 - (endTime - Time.time) / buildTime);
+			var i = Mathf.Max(0, 1 - (endTime - Time.time) / buildTime);
+			if (InvertedProgressBar)
+				return 1-i;
+			else
+				return i;
 		}
 	}
 
@@ -36,7 +43,8 @@ public class PlayerTool : MonoBehaviour
 		Tile tile = GetSelectedTile();
 		if (tile != null)
 		{
-			SelectionHightlight.transform.position = tile.transform.position;
+			if (SelectionHightlight != null)
+				SelectionHightlight.transform.position = tile.transform.position;
 			if (selected != tile)
 			{
 				endTime = 0;
@@ -45,14 +53,16 @@ public class PlayerTool : MonoBehaviour
 
 			if (IsValid(tile))
 			{
-				SelectionHightlight.renderer.material.color = transparent(Color.green);
+				if (SelectionHightlight != null)
+					SelectionHightlight.renderer.material.color = transparent(Color.green);
 			}
 			else
 			{
-				SelectionHightlight.renderer.material.color = transparent(Color.red);
+				if (SelectionHightlight != null)
+					SelectionHightlight.renderer.material.color = transparent(Color.red);
 			}
 
-			if (Input.GetButton("Fire1") && IsValid(tile) && !GlobalSettings.HitUI())
+			if (Input.GetButton(InputString) && !Input.GetButton(CancelString) && IsValid(tile) && !GlobalSettings.HitUI())
 			{
 				if (endTime == 0)
 				{
@@ -62,7 +72,7 @@ public class PlayerTool : MonoBehaviour
 				{
 					tile.BroadcastMessage("RemovedByPlayer", SendMessageOptions.DontRequireReceiver);
 					var newtile = tile.SetTile(SelectedTool);
-					if(newtile != null)
+					if (newtile != null)
 					{
 						newtile.BroadcastMessage("PlacedByPlayer", SendMessageOptions.DontRequireReceiver);
 					}
@@ -100,7 +110,7 @@ public class PlayerTool : MonoBehaviour
 				continue;
 			}
 			possible.AddRange(tile.AdjacentTiles(true));
-			if(SelectedTool.CanPlaceOnTopOfCharacter)
+			if (SelectedTool.CanPlaceOnTopOfCharacter)
 				possible.Add(tile);
 			break;
 		}
