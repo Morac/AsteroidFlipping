@@ -242,6 +242,7 @@ MonoBehaviour:
   BuyBlueprintCost: 300
   CanBeAttachedTo: 0
   CanPlaceOnTopOfCharacter: 0
+  IsRoomBorder: 0
   ShakeAmount: .0500000007
   ShakeDuration: .200000003
   ContractTags: 000000000200000003000000

@@ -31,6 +31,7 @@ public class Tile : MonoBehaviour
 
 	public bool CanBeAttachedTo = false;
 	public bool CanPlaceOnTopOfCharacter = true;
+	public bool IsRoomBorder = true;
 
 	public float ShakeAmount = 0.05f;
 	public float ShakeDuration = 0.2f;
@@ -46,6 +47,10 @@ public class Tile : MonoBehaviour
 	public TileType type;
 	[HideInInspector]
 	public TileGrid tilegrid;
+
+	public RoomManager.Room Room;
+
+	public int RoomTypes = 0;
 
 	public string GetDisplayName()
 	{
