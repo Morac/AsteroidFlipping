@@ -334,6 +334,9 @@ MonoBehaviour:
   Y: 0
   type: 0
   tilegrid: {fileID: 0}
+  DefaultFloor: {fileID: 0}
+  CurrentFloor: {fileID: 0}
+  RoomTypes: 0
 --- !u!114 &11400006
 MonoBehaviour:
   m_ObjectHideFlags: 1

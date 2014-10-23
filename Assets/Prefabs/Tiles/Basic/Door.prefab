@@ -64,7 +64,7 @@ GameObject:
   - 23: {fileID: 2300002}
   - 65: {fileID: 6500002}
   m_Layer: 8
-  m_Name: Cube
+  m_Name: DefaultFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.2106247, y: -12.3090744, z: 73.222084}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400006}
@@ -153,7 +153,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: c4caf4392e26cd949b39ff78f3ea169d, type: 2}
+  - {fileID: 2100000, guid: 484effd3a174d59418217e3c8b6fd24a, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -218,6 +218,7 @@ MonoBehaviour:
   BuyBlueprintCost: 0
   CanBeAttachedTo: 0
   CanPlaceOnTopOfCharacter: 1
+  IsRoomBorder: 1
   ShakeAmount: .0500000007
   ShakeDuration: .200000003
   ContractTags: 
@@ -225,6 +226,9 @@ MonoBehaviour:
   Y: 0
   type: 0
   tilegrid: {fileID: 0}
+  DefaultFloor: {fileID: 100006}
+  CurrentFloor: {fileID: 0}
+  RoomTypes: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

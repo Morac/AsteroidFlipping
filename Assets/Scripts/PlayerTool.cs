@@ -102,17 +102,11 @@ public class PlayerTool : MonoBehaviour
 	Tile GetSelectedTile()
 	{
 		List<Tile> possible = new List<Tile>();
-		foreach (var hit in Physics.RaycastAll(transform.position, -transform.up))
+		if (Player.Instance.CurrentTile != null)
 		{
-			var tile = hit.transform.GetComponentInParents<Tile>();
-			if (tile == null)
-			{
-				continue;
-			}
-			possible.AddRange(tile.AdjacentTiles(true));
+			possible.AddRange(Player.Instance.CurrentTile.AdjacentTiles(true));
 			if (SelectedTool.CanPlaceOnTopOfCharacter)
-				possible.Add(tile);
-			break;
+				possible.Add(Player.Instance.CurrentTile);
 		}
 
 		if (possible.Count > 0)

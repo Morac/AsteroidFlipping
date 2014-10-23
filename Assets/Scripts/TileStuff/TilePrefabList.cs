@@ -9,6 +9,8 @@ public class TilePrefabList : ScriptableObject {
 	public List<Tile> PurchasableTiles = new List<Tile>();
 	public List<Tile> SystemTiles = new List<Tile>();
 
+	public List<Floor> FloorPrefabs = new List<Floor>();
+
 	//todo: set up a loading scene that can download and set this somehow
 	static TilePrefabList _instance;
 	public static TilePrefabList Instance
@@ -61,6 +63,17 @@ public class TilePrefabList : ScriptableObject {
 		ret.AddRange(BasicTiles);
 		ret.AddRange(PurchasableTiles);
 		ret.AddRange(SystemTiles);
+		return ret;
+	}
+
+	public IList<Floor> GetAllFloorsPrefabsForType(RoomManager.RoomType type)
+	{
+		List<Floor> ret = new List<Floor>();
+		foreach(var f in FloorPrefabs)
+		{
+			if (f.Type == type)
+				ret.Add(f);
+		}
 		return ret;
 	}
 

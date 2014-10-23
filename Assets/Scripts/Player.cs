@@ -15,4 +15,20 @@ public class Player : Singleton<Player>
 	}
 
 	public PlayerTool MainTool;
+
+	public Tile CurrentTile;
+
+	void Update()
+	{
+		var hits = Physics.RaycastAll(transform.position, -transform.up);
+		foreach(var hit in hits)
+		{
+			var tile = hit.transform.GetComponentInParents<Tile>();
+			if(tile != null)
+			{
+				CurrentTile = tile;
+				break;
+			}
+		}
+	}
 }

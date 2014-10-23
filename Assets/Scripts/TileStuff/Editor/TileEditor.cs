@@ -8,6 +8,8 @@ public class TileEditor : Editor
 	public override void OnInspectorGUI()
 	{
 		var tile = target as Tile;
+		if (tile == null)
+			return;
 
 		foreach(var t in TilePrefabList.Instance.GetAllTiles())
 		{
