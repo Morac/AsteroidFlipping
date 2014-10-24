@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 
 [RequireComponent(typeof(TileGrid))]
-public class RoomManager : MonoBehaviour
+public class RoomManager : Singleton<RoomManager>
 {
 	public enum RoomType
 	{
+		None,
 		Bedroom,
 		Garden,
 		Workshop,
@@ -26,18 +27,19 @@ public class RoomManager : MonoBehaviour
 		Stack<Tile> stack = new Stack<Tile>();
 		stack.Push(startTile);
 
-		var room = startTile.Room;
-		if (room == null)
-		{
-			room = new Room();
-		}
+		var room = new Room();
 		room.Type = type;
 		room.Tiles.Clear();
 
+		int bail = 0;
 		while (stack.Count > 0)
 		{
 			var current = stack.Pop();
 			room.Tiles.Add(current);
+			if(current.Room != null)
+			{
+				current.Room.Tiles.Remove(current);
+			}
 			current.Room = room;
 
 			//set floor tile
@@ -50,6 +52,7 @@ public class RoomManager : MonoBehaviour
 						Destroy(current.CurrentFloor.gameObject);
 					var newfloor = Instantiate(floors[Random.Range(0, floors.Count)]) as Floor;
 					newfloor.transform.position = current.DefaultFloor.transform.position;
+					newfloor.transform.parent = current.transform;
 					current.CurrentFloor = newfloor;
 					current.DefaultFloor.SetActive(false);
 				}
@@ -62,8 +65,51 @@ public class RoomManager : MonoBehaviour
 			//push adjacent
 			foreach (var adj in current.AdjacentTiles(false))
 			{
-				if (adj != null && adj.IsRoomBorder == false)
+				if (adj != null && adj.IsRoomBorder == false && adj.Room != room)
 					stack.Push(adj);
+			}
+
+			bail++;
+			if (bail > 10000)
+			{
+				Debug.LogError("!");
+				break;
+			}
+		}
+
+		var copy = Rooms;
+		foreach(var r in copy)
+		{
+			if(r.Tiles.Count == 0)
+			{
+				Rooms.Remove(r);
+			}
+		}
+	}
+
+	public void AddToRoom(Room room, Tile tile)
+	{
+		if (tile.Room != null)
+			tile.Room.Tiles.Remove(tile);
+		room.Tiles.Add(tile);
+		tile.Room = room;
+
+		if (tile.DefaultFloor != null)
+		{
+			var floors = TilePrefabList.Instance.GetAllFloorsPrefabsForType(room.Type);	
+			if (floors.Count > 0)
+			{
+				if (tile.CurrentFloor != null)
+					Destroy(tile.CurrentFloor.gameObject);
+				var newfloor = Instantiate(floors[Random.Range(0, floors.Count)]) as Floor;
+				newfloor.transform.position = tile.DefaultFloor.transform.position;
+				newfloor.transform.parent = tile.transform;
+				tile.CurrentFloor = newfloor;
+				tile.DefaultFloor.SetActive(false);
+			}
+			else
+			{
+				tile.DefaultFloor.SetActive(true);
 			}
 		}
 	}

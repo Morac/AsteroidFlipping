@@ -11,24 +11,9 @@ GameObject:
   - 33: {fileID: 3300000}
   - 23: {fileID: 2300000}
   - 65: {fileID: 6500000}
-  m_Layer: 8
-  m_Name: DefaultFloor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &100002
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 400002}
   - 114: {fileID: 11400000}
   m_Layer: 8
-  m_Name: Clear
+  m_Name: BedroomFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,19 +29,6 @@ Transform:
   m_LocalPosition: {x: 0, y: -1.10000002, z: 0}
   m_LocalScale: {x: 1, y: .200000003, z: 1}
   m_Children: []
-  m_Father: {fileID: 400002}
-  m_RootOrder: 0
---- !u!4 &400002
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 400000}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!23 &2300000
@@ -71,7 +43,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 484effd3a174d59418217e3c8b6fd24a, type: 2}
+  - {fileID: 2100000, guid: c4caf4392e26cd949b39ff78f3ea169d, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -103,31 +75,13 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100002}
+  m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 147c65b1bb46fe546ab55f459447672e, type: 3}
+  m_Script: {fileID: 11500000, guid: bf7c855e6a067c744b8c92463d275d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DisplayName: 
-  DisplayPluralName: 
-  SaveCode: bc
-  Description: 
-  Rarity: 4
-  BuyBlueprintCost: 0
-  CanBeAttachedTo: 0
-  CanPlaceOnTopOfCharacter: 1
-  IsRoomBorder: 0
-  ShakeAmount: .0500000007
-  ShakeDuration: .200000003
-  ContractTags: 
-  X: 0
-  Y: 0
-  type: 0
-  tilegrid: {fileID: 0}
-  DefaultFloor: {fileID: 100000}
-  CurrentFloor: {fileID: 0}
-  RoomTypes: 0
+  Type: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -137,6 +91,6 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 100002}
+  m_RootGameObject: {fileID: 100000}
   m_IsPrefabParent: 1
   m_IsExploded: 1

@@ -111,10 +111,15 @@ public class TileGrid : MonoBehaviour
 		grid[x, y] = tile;
 		tile.name = tile.name.Replace("(Clone)", "");
 
+		RoomManager.Room r = null;
 		foreach(var adj in tile.AdjacentTiles(false))
 		{
 			if(adj != null)
 				adj.BroadcastMessage("OnAdjacentUpdated", SendMessageOptions.DontRequireReceiver);
+			if(r == null && adj.Room != null)
+			{
+
+			}
 		}
 
 		return tile;

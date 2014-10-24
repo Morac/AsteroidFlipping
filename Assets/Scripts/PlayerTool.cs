@@ -96,7 +96,10 @@ public class PlayerTool : MonoBehaviour
 
 	public bool IsValid(Tile t)
 	{
-		return t.name != SelectedTool.name && t.type == Tile.TileType.Interior && SelectedTool.CanAfford();
+		return t.name != SelectedTool.name 
+			&& t.type == Tile.TileType.Interior 
+			&& SelectedTool.CanAfford() 
+			&& RoomManager.Instance.VerifyReplace(t, SelectedTool);
 	}
 
 	Tile GetSelectedTile()

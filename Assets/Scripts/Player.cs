@@ -21,6 +21,7 @@ public class Player : Singleton<Player>
 	void Update()
 	{
 		var hits = Physics.RaycastAll(transform.position, -transform.up);
+		CurrentTile = null;
 		foreach(var hit in hits)
 		{
 			var tile = hit.transform.GetComponentInParents<Tile>();
@@ -28,6 +29,23 @@ public class Player : Singleton<Player>
 			{
 				CurrentTile = tile;
 				break;
+			}
+		}
+
+		if (CurrentTile != null)
+		{
+			if (CurrentTile.Room == null)
+			{
+				RoomManager.Instance.SetRoom(RoomManager.RoomType.None, CurrentTile);
+			}
+
+			if (Input.GetKeyDown(KeyCode.Z))
+			{
+				RoomManager.Instance.SetRoom(RoomManager.RoomType.Bedroom, CurrentTile);
+			}
+			if (Input.GetKeyDown(KeyCode.X))
+			{
+				RoomManager.Instance.SetRoom(RoomManager.RoomType.None, CurrentTile);
 			}
 		}
 	}

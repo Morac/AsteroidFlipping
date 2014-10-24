@@ -22,6 +22,8 @@ public class Wall : MonoBehaviour
 			return;
 		foreach (var adjacent in tile.AdjacentTiles(false))
 		{
+			if (adjacent == null)
+				continue;
 			if (adjacent.name != name && adjacent.type != Tile.TileType.Exterior)
 			{
 				visible.SetActive(true);

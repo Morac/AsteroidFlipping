@@ -16,10 +16,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d69206384fc00c4d815382daa940d3a, type: 2}
   - {fileID: 11400004, guid: 46e09a545444297468578d1d88b87b06, type: 2}
   - {fileID: 11400004, guid: 3dac33b377635e34b9230156a703739c, type: 2}
-  - {fileID: 11400000, guid: 688bc8c7777d8fe4ab3093580b5ed676, type: 2}
   - {fileID: 11400006, guid: 854aa98ebeb69b44ebbe04dc4c23f37f, type: 2}
   PurchasableTiles: []
   SystemTiles:
   - {fileID: 11400000, guid: 961ca034a0f83e043901d297c4598dd5, type: 2}
   - {fileID: 11400000, guid: c94dae60aa1e8b64c9c78d5ffe45fedf, type: 2}
   - {fileID: 11400000, guid: 2ffe69e9be0c8274b95c369ecb9d2f78, type: 2}
+  FloorPrefabs:
+  - {fileID: 11400000, guid: 911d01970a556ad49a5885b290e5f1c4, type: 2}
+  - {fileID: 11400000, guid: dd968529f9cbe3c4794b96f9316e0536, type: 2}
