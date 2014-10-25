@@ -48,8 +48,7 @@ public class Tile : MonoBehaviour
 	[HideInInspector]
 	public TileGrid tilegrid;
 
-	[HideInInspector]
-	public RoomManager.Room Room;
+	public RoomManager.Room Room = null;
 
 	public GameObject DefaultFloor;
 	

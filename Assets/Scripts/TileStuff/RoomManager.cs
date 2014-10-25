@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 [RequireComponent(typeof(TileGrid))]
 public class RoomManager : Singleton<RoomManager>
@@ -12,6 +13,7 @@ public class RoomManager : Singleton<RoomManager>
 		Workshop,
 		LifeSupport
 	}
+
 
 	public class Room
 	{
@@ -29,7 +31,7 @@ public class RoomManager : Singleton<RoomManager>
 
 		var room = new Room();
 		room.Type = type;
-		room.Tiles.Clear();
+		Rooms.Add(room);
 
 		int bail = 0;
 		while (stack.Count > 0)
@@ -77,7 +79,8 @@ public class RoomManager : Singleton<RoomManager>
 			}
 		}
 
-		var copy = Rooms;
+		var copy = new List<Room>();
+		copy.AddRange(Rooms);
 		foreach(var r in copy)
 		{
 			if(r.Tiles.Count == 0)
@@ -85,6 +88,7 @@ public class RoomManager : Singleton<RoomManager>
 				Rooms.Remove(r);
 			}
 		}
+		Rooms = copy;
 	}
 
 	public void AddToRoom(Room room, Tile tile)
@@ -122,15 +126,52 @@ public class RoomManager : Singleton<RoomManager>
 		if (newTile.IsRoomBorder)
 			return true;
 
-		HashSet<Room> borderedRooms = new HashSet<Room>();
+
+		HashSet<Room> adjacentRooms = new HashSet<Room>();
 		foreach (var adj in currentTile.AdjacentTiles(false))
 		{
-			if (adj != null)
+			if (adj != null && adj.IsRoomBorder)
+				continue;
+			if (adj != null && adj.Room != null)
 			{
-				borderedRooms.Add(adj.Room);
+				if (adjacentRooms.Any(item => item.Type != adj.Room.Type))
+					return false;
+				adjacentRooms.Add(adj.Room);
 			}
 		}
 
-		return borderedRooms.Count <= 1;
+		return true;
+	}
+
+	public void MergeRooms(Room a, Room b)
+	{
+		if (a == null || b == null)
+			return;
+		if(a.Type != b.Type)
+		{
+			Debug.LogError("Cannot merge rooms");
+			return;
+		}
+
+		var mergetiles = new List<Tile>();
+		mergetiles.AddRange(b.Tiles);
+		foreach(var tile in mergetiles)
+		{
+			b.Tiles.Remove(tile);
+			tile.Room = a;
+			a.Tiles.Add(tile);
+		}
+
+		Rooms.Remove(b);
+	}
+
+	public string Save()
+	{
+		return string.Empty;
+	}
+
+	public void Load(string save)
+	{
+
 	}
 }

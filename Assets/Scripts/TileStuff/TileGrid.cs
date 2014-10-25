@@ -114,11 +114,27 @@ public class TileGrid : MonoBehaviour
 		RoomManager.Room r = null;
 		foreach(var adj in tile.AdjacentTiles(false))
 		{
-			if(adj != null)
-				adj.BroadcastMessage("OnAdjacentUpdated", SendMessageOptions.DontRequireReceiver);
-			if(r == null && adj.Room != null)
+			if (adj != null)
 			{
-
+				adj.BroadcastMessage("OnAdjacentUpdated", SendMessageOptions.DontRequireReceiver);
+				
+				
+				if (r == null && adj.Room != null)
+				{
+					r = adj.Room;
+					RoomManager.Instance.AddToRoom(r, tile);
+				}
+				else if (adj.IsRoomBorder == false && r != null && adj.Room != null && r != adj.Room)
+				{
+					if (r.Type == adj.Room.Type)
+					{
+						RoomManager.Instance.MergeRooms(r, adj.Room);
+					}
+					else
+					{
+						Debug.LogWarning("Invalid room add!");
+					}
+				}
 			}
 		}
 

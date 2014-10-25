@@ -34,7 +34,7 @@ public class Player : Singleton<Player>
 
 		if (CurrentTile != null)
 		{
-			if (CurrentTile.Room == null)
+			if (CurrentTile.Room == null && CurrentTile.IsRoomBorder == false)
 			{
 				RoomManager.Instance.SetRoom(RoomManager.RoomType.None, CurrentTile);
 			}

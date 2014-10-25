@@ -95,6 +95,9 @@ public class GameManager : Singleton<GameManager>
 		string s = tileGrid.Save();
 		writer.WriteLine(s);
 
+		s = RoomManager.Instance.Save();
+		writer.WriteLine(s);
+
 		writer.Close();
 	}
 
@@ -116,6 +119,8 @@ public class GameManager : Singleton<GameManager>
 
 
 		tileGrid.Load(reader.ReadLine());
+
+		RoomManager.Instance.Load(reader.ReadLine());
 
 		reader.Close();
 	}
