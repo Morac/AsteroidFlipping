@@ -95,8 +95,13 @@ public class TileGrid : MonoBehaviour
 			return null;
 
 		if (grid[x, y] != null)
+		{
+			if(grid[x,y].Room != null)
+			{
+				grid[x, y].Room.Tiles.Remove(grid[x, y]);
+			}
 			Destroy(grid[x, y].gameObject);
-
+		}
 		if (tilelist == null || tilelist.Length == 0)
 			return null;
 
@@ -117,22 +122,24 @@ public class TileGrid : MonoBehaviour
 			if (adj != null)
 			{
 				adj.BroadcastMessage("OnAdjacentUpdated", SendMessageOptions.DontRequireReceiver);
-				
-				
-				if (r == null && adj.Room != null)
+
+				if (!tile.IsRoomBorder)
 				{
-					r = adj.Room;
-					RoomManager.Instance.AddToRoom(r, tile);
-				}
-				else if (adj.IsRoomBorder == false && r != null && adj.Room != null && r != adj.Room)
-				{
-					if (r.Type == adj.Room.Type)
+					if (r == null && adj.Room != null)
 					{
-						RoomManager.Instance.MergeRooms(r, adj.Room);
+						r = adj.Room;
+						RoomManager.Instance.AddToRoom(r, tile);
 					}
-					else
+					else if (adj.IsRoomBorder == false && r != null && adj.Room != null && r != adj.Room)
 					{
-						Debug.LogWarning("Invalid room add!");
+						if (r.Type == adj.Room.Type)
+						{
+							RoomManager.Instance.MergeRooms(r, adj.Room);
+						}
+						else
+						{
+							Debug.LogWarning("Invalid room add!");
+						}
 					}
 				}
 			}

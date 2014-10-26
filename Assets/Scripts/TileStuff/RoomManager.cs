@@ -38,7 +38,7 @@ public class RoomManager : Singleton<RoomManager>
 		{
 			var current = stack.Pop();
 			room.Tiles.Add(current);
-			if(current.Room != null)
+			if (current.Room != null)
 			{
 				current.Room.Tiles.Remove(current);
 			}
@@ -81,9 +81,9 @@ public class RoomManager : Singleton<RoomManager>
 
 		var copy = new List<Room>();
 		copy.AddRange(Rooms);
-		foreach(var r in copy)
+		foreach (var r in copy)
 		{
-			if(r.Tiles.Count == 0)
+			if (r.Tiles.Count == 0)
 			{
 				Rooms.Remove(r);
 			}
@@ -100,7 +100,7 @@ public class RoomManager : Singleton<RoomManager>
 
 		if (tile.DefaultFloor != null)
 		{
-			var floors = TilePrefabList.Instance.GetAllFloorsPrefabsForType(room.Type);	
+			var floors = TilePrefabList.Instance.GetAllFloorsPrefabsForType(room.Type);
 			if (floors.Count > 0)
 			{
 				if (tile.CurrentFloor != null)
@@ -147,7 +147,7 @@ public class RoomManager : Singleton<RoomManager>
 	{
 		if (a == null || b == null)
 			return;
-		if(a.Type != b.Type)
+		if (a.Type != b.Type)
 		{
 			Debug.LogError("Cannot merge rooms");
 			return;
@@ -155,7 +155,7 @@ public class RoomManager : Singleton<RoomManager>
 
 		var mergetiles = new List<Tile>();
 		mergetiles.AddRange(b.Tiles);
-		foreach(var tile in mergetiles)
+		foreach (var tile in mergetiles)
 		{
 			b.Tiles.Remove(tile);
 			tile.Room = a;
@@ -167,11 +167,43 @@ public class RoomManager : Singleton<RoomManager>
 
 	public string Save()
 	{
-		return string.Empty;
+		string s = "";
+		foreach (var room in Rooms)
+		{
+			if (room.Tiles.Count == 0)
+				continue;
+			s += room.Type + ",";
+			foreach (var tile in room.Tiles)
+			{
+				s += tile.X + "," + tile.Y + ",";
+			}
+			s = s.Substring(0, s.Length - 1);
+			s += ";";
+		}
+		s = s.Substring(0, s.Length - 1);
+		return s;
 	}
 
 	public void Load(string save)
 	{
-
+		var grid = GetComponent<TileGrid>();
+		var rooms = save.Split(';');
+		foreach (var room in rooms)
+		{
+			Room r = new Room();
+			var data = room.Split(',');
+			r.Type = (RoomType)System.Enum.Parse(typeof(RoomType), data[0]);
+			for (int i = 1; i < data.Length; i += 2)
+			{
+				int x = int.Parse(data[i]);
+				int y = int.Parse(data[i + 1]);
+				var tile = grid.grid[x, y];
+				if(tile != null)
+				{
+					AddToRoom(r, tile);
+				}
+			}
+			Rooms.Add(r);
+		}
 	}
 }
