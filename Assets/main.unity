@@ -1237,6 +1237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 11400000, guid: edc34e85f4f36b84ea62a10260b9e0a2, type: 2}
+  ErrorLabel: {fileID: 0}
 --- !u!1 &286390017
 GameObject:
   m_ObjectHideFlags: 0
@@ -3160,7 +3161,7 @@ MonoBehaviour:
   autoResizeBoxCollider: 0
   hideIfOffScreen: 0
   keepAspectRatio: 0
-  aspectRatio: 100
+  aspectRatio: 2
 --- !u!1 &657567640
 GameObject:
   m_ObjectHideFlags: 0

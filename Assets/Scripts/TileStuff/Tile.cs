@@ -55,7 +55,7 @@ public class Tile : MonoBehaviour
 	[HideInInspector]
 	public Floor CurrentFloor;
 
-	public int RoomTypes = 0;
+	public int RoomTypes = 0xFFFFFF;
 
 	public string GetDisplayName()
 	{
