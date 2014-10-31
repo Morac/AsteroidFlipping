@@ -1,12 +1,21 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
 [CustomEditor(typeof(Tile))]
+[CanEditMultipleObjects]
 public class TileEditor : Editor
 {
+	SerializedProperty roomTypes;
+
+	void OnEnable()
+	{
+		roomTypes = serializedObject.FindProperty("RoomTypes");
+	}
+
 	public override void OnInspectorGUI()
 	{
+		serializedObject.Update();
+
 		var tile = target as Tile;
 		if (tile == null)
 			return;
@@ -26,5 +35,9 @@ public class TileEditor : Editor
 		}
 
 		base.OnInspectorGUI();
+
+		roomTypes.intValue = EditorGUILayout.MaskField("Room Types", roomTypes.intValue, System.Enum.GetNames(typeof(RoomManager.RoomType)));
+
+		serializedObject.ApplyModifiedProperties();
 	}
 }

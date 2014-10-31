@@ -7,11 +7,11 @@ public class RoomManager : Singleton<RoomManager>
 {
 	public enum RoomType
 	{
-		None,
-		Bedroom,
-		Garden,
-		Workshop,
-		LifeSupport
+		Unzoned = 1,
+		Bedroom = 2,
+		Garden = 4,
+		Workshop = 8,
+		LifeSupport = 16
 	}
 
 

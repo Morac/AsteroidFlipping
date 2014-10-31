@@ -36,7 +36,7 @@ public class Player : Singleton<Player>
 		{
 			if (CurrentTile.Room == null && CurrentTile.IsRoomBorder == false)
 			{
-				RoomManager.Instance.SetRoom(RoomManager.RoomType.None, CurrentTile);
+				RoomManager.Instance.SetRoom(RoomManager.RoomType.Unzoned, CurrentTile);
 			}
 
 			if (Input.GetKeyDown(KeyCode.Z))
@@ -45,7 +45,7 @@ public class Player : Singleton<Player>
 			}
 			if (Input.GetKeyDown(KeyCode.X))
 			{
-				RoomManager.Instance.SetRoom(RoomManager.RoomType.None, CurrentTile);
+				RoomManager.Instance.SetRoom(RoomManager.RoomType.Unzoned, CurrentTile);
 			}
 		}
 	}

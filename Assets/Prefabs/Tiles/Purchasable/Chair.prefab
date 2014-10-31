@@ -252,7 +252,7 @@ MonoBehaviour:
   tilegrid: {fileID: 0}
   DefaultFloor: {fileID: 100006}
   CurrentFloor: {fileID: 0}
-  RoomTypes: 0
+  RoomTypes: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

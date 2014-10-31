@@ -33,14 +33,24 @@ public class TileItemList : MonoBehaviour
 			Destroy(tile.gameObject);
 		}
 
-		if(CurrentRoom == null)
+		if(CurrentRoom == null || CurrentRoom.Type == RoomManager.RoomType.Unzoned)
 		{
 			ErrorLabel.text = "No Zone Set";
 		}
 		else
 		{
-			var tiles = TilePrefabList.Instance.GetAllTiles().Where(item => (item.RoomTypes | (int)CurrentRoom.Type) != 0);
+			var tiles = TilePrefabList.Instance.GetAllTiles().Where(item => (item.RoomTypes | (int)CurrentRoom.Type) != 0).ToList();
+			foreach(var tile in tiles)
+			{
+				var item = Instantiate(prefab, transform.position, transform.rotation) as TileItemBtn;
+				item.transform.parent = transform;
+				item.transform.localScale = Vector3.one;
+				item.TileItem = tile;
+			}
 
+			Player.Instance.MainTool.SelectedTool = tiles[0];
+
+			GetComponent<UIGrid>().Reposition();
 		}
 		//foreach(var tile in Tiles)
 		//{
