@@ -96,7 +96,8 @@ public class PlayerTool : MonoBehaviour
 
 	public bool IsValid(Tile t)
 	{
-		return t.name != SelectedTool.name 
+		return SelectedTool != null
+			&& t.name != SelectedTool.name 
 			&& t.type == Tile.TileType.Interior 
 			&& SelectedTool.CanAfford() 
 			&& RoomManager.Instance.VerifyReplace(t, SelectedTool);
@@ -108,7 +109,7 @@ public class PlayerTool : MonoBehaviour
 		if (Player.Instance.CurrentTile != null)
 		{
 			possible.AddRange(Player.Instance.CurrentTile.AdjacentTiles(true));
-			if (SelectedTool.CanPlaceOnTopOfCharacter)
+			if (SelectedTool != null && SelectedTool.CanPlaceOnTopOfCharacter)
 				possible.Add(Player.Instance.CurrentTile);
 		}
 

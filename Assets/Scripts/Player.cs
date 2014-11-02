@@ -38,15 +38,6 @@ public class Player : Singleton<Player>
 			{
 				RoomManager.Instance.SetRoom(RoomManager.RoomType.Unzoned, CurrentTile);
 			}
-
-			if (Input.GetKeyDown(KeyCode.Z))
-			{
-				RoomManager.Instance.SetRoom(RoomManager.RoomType.Bedroom, CurrentTile);
-			}
-			if (Input.GetKeyDown(KeyCode.X))
-			{
-				RoomManager.Instance.SetRoom(RoomManager.RoomType.Unzoned, CurrentTile);
-			}
 		}
 	}
 }

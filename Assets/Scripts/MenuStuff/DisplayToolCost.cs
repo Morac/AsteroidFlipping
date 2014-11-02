@@ -15,6 +15,9 @@ public class DisplayToolCost : MonoBehaviour
 
 	void Update()
 	{
-		label.text = tool.SelectedTool.CostString();
+		if (tool.SelectedTool != null)
+			label.text = tool.SelectedTool.CostString();
+		else
+			label.text = "";
 	}
 }

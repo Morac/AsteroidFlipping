@@ -98,7 +98,7 @@ public class TileGrid : MonoBehaviour
 		{
 			if(grid[x,y].Room != null)
 			{
-				grid[x, y].Room.Tiles.Remove(grid[x, y]);
+				grid[x, y].Room.RemoveTile(grid[x, y]);
 			}
 			Destroy(grid[x, y].gameObject);
 		}

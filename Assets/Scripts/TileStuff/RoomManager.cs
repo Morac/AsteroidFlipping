@@ -14,11 +14,76 @@ public class RoomManager : Singleton<RoomManager>
 		LifeSupport = 16
 	}
 
+	public enum RoomQuality
+	{
+		None = 0,
+		Poor = 1,
+		Moderate = 5,
+		Good = 10,
+		Exquisite = 20
+	}
+
 
 	public class Room
 	{
 		public RoomType Type;
-		public List<Tile> Tiles = new List<Tile>();
+
+		RoomQuality quality;
+		public RoomQuality Quality
+		{
+			get
+			{
+				return quality;
+			}
+		}
+
+		List<Tile> tiles = new List<Tile>();
+		public List<Tile> Tiles
+		{
+			get
+			{
+				return tiles;
+			}
+		}
+
+		public void AddTile(Tile t)
+		{
+			if (!tiles.Contains(t))
+			{
+				tiles.Add(t);
+				RecalculateQuality();
+			}
+		}
+
+		public void RemoveTile(Tile t)
+		{
+			tiles.Remove(t);
+			RecalculateQuality();
+		}
+
+		public void RecalculateQuality()
+		{
+			int value = 0;
+			foreach(var tile in tiles)
+			{
+				var val = tile.GetComponent<Valuable>();
+				if(val != null)
+				{
+					value += val.value;
+				}
+			}
+			foreach(var val in System.Enum.GetValues(typeof(RoomQuality)))
+			{
+				if(value > (int)val)
+				{
+					quality = (RoomQuality)val;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
 	}
 
 	public List<Room> Rooms = new List<Room>();
@@ -37,10 +102,10 @@ public class RoomManager : Singleton<RoomManager>
 		while (stack.Count > 0)
 		{
 			var current = stack.Pop();
-			room.Tiles.Add(current);
+			room.AddTile(current);
 			if (current.Room != null)
 			{
-				current.Room.Tiles.Remove(current);
+				current.Room.RemoveTile(current);
 			}
 			current.Room = room;
 
@@ -94,8 +159,8 @@ public class RoomManager : Singleton<RoomManager>
 	public void AddToRoom(Room room, Tile tile)
 	{
 		if (tile.Room != null)
-			tile.Room.Tiles.Remove(tile);
-		room.Tiles.Add(tile);
+			tile.Room.RemoveTile(tile);
+		room.AddTile(tile);
 		tile.Room = room;
 
 		if (tile.DefaultFloor != null)
@@ -157,9 +222,9 @@ public class RoomManager : Singleton<RoomManager>
 		mergetiles.AddRange(b.Tiles);
 		foreach (var tile in mergetiles)
 		{
-			b.Tiles.Remove(tile);
+			b.RemoveTile(tile);
 			tile.Room = a;
-			a.Tiles.Add(tile);
+			a.AddTile(tile);
 		}
 
 		Rooms.Remove(b);
@@ -198,7 +263,7 @@ public class RoomManager : Singleton<RoomManager>
 				int x = int.Parse(data[i]);
 				int y = int.Parse(data[i + 1]);
 				var tile = grid.grid[x, y];
-				if(tile != null)
+				if (tile != null)
 				{
 					AddToRoom(r, tile);
 				}
