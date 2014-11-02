@@ -44,15 +44,16 @@ public class RoomManager : Singleton<RoomManager>
 			{
 				return tiles;
 			}
+			private set
+			{
+				tiles = value;
+			}
 		}
 
 		public void AddTile(Tile t)
 		{
-			if (!tiles.Contains(t))
-			{
-				tiles.Add(t);
-				RecalculateQuality();
-			}
+			tiles.Add(t);
+			RecalculateQuality();
 		}
 
 		public void RemoveTile(Tile t)
@@ -64,17 +65,17 @@ public class RoomManager : Singleton<RoomManager>
 		public void RecalculateQuality()
 		{
 			int value = 0;
-			foreach(var tile in tiles)
+			foreach (var tile in tiles)
 			{
 				var val = tile.GetComponent<Valuable>();
-				if(val != null)
+				if (val != null)
 				{
 					value += val.value;
 				}
 			}
-			foreach(var val in System.Enum.GetValues(typeof(RoomQuality)))
+			foreach (var val in System.Enum.GetValues(typeof(RoomQuality)))
 			{
-				if(value > (int)val)
+				if (value > (int)val)
 				{
 					quality = (RoomQuality)val;
 				}
