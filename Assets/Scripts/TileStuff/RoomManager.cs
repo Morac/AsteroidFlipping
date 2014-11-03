@@ -67,15 +67,11 @@ public class RoomManager : Singleton<RoomManager>
 			int value = 0;
 			foreach (var tile in tiles)
 			{
-				var val = tile.GetComponent<Valuable>();
-				if (val != null)
-				{
-					value += val.value;
-				}
+				value += tile.Value;
 			}
 			foreach (var val in System.Enum.GetValues(typeof(RoomQuality)))
 			{
-				if (value > (int)val)
+				if (value >= (int)val)
 				{
 					quality = (RoomQuality)val;
 				}

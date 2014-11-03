@@ -381,9 +381,7 @@ public class Contract
 			{
 				if(tile != null)
 				{
-					var val = tile.GetComponent<Valuable>();
-					if (val)
-						total += val.value;
+					total += tile.Value;
 				}
 			}
 

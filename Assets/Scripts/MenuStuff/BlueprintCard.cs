@@ -31,10 +31,9 @@ public class BlueprintCard : MonoBehaviour {
 		BuildCostLabel.text = tile.CostString();
 		DescriptionLabel.text = tile.Description;
 
-		var valuecomp = tile.GetComponent<Valuable>();
-		if (valuecomp)
+		if (tile.Value != 0)
 		{
-			EffectLabel.text = "Value +" + GlobalSettings.Currency + valuecomp.value;
+			EffectLabel.text = "Value +" + GlobalSettings.Currency + tile.Value;
 		}
 		else
 		{
@@ -70,10 +69,9 @@ public class BlueprintCard : MonoBehaviour {
 
 	void CurrencyUpdated(int newval)
 	{
-		var valuecomp = tile.GetComponent<Valuable>();
-		if (valuecomp)
+		if (tile.Value != 0)
 		{
-			EffectLabel.text = "Value +" + GlobalSettings.Currency + valuecomp.value;
+			EffectLabel.text = "Value +" + GlobalSettings.Currency + tile.Value;
 		}
 		else
 		{

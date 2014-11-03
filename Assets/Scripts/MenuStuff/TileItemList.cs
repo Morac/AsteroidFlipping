@@ -36,7 +36,7 @@ public class TileItemList : MonoBehaviour
 			Destroy(tile.gameObject);
 		}
 
-		if(CurrentRoom == null || CurrentRoom.Type == RoomManager.RoomType.Unzoned)
+		if(CurrentRoom == null)
 		{
 			ErrorLabel.text = "No Zone Set";
 			Player.Instance.MainTool.SelectedTool = null;

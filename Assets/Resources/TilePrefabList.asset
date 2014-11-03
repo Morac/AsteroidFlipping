@@ -25,3 +25,6 @@ MonoBehaviour:
   FloorPrefabs:
   - {fileID: 11400000, guid: 911d01970a556ad49a5885b290e5f1c4, type: 2}
   - {fileID: 11400000, guid: dd968529f9cbe3c4794b96f9316e0536, type: 2}
+  - {fileID: 11400000, guid: 8d37adfa5455608499572a1df709e932, type: 2}
+  - {fileID: 11400000, guid: 357033c49b006af4fa8bd3e78b808135, type: 2}
+  - {fileID: 11400000, guid: 7744598278599c74ca58d557f19417c4, type: 2}

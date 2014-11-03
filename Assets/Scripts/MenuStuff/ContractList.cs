@@ -48,7 +48,6 @@ public class ContractList : GenericUIList
 	{
 		var c1 = a.GetComponent<ListItem>().Data as Contract;
 		var c2 = b.GetComponent<ListItem>().Data as Contract;
-		Debug.Log(c1.BidEndTime + "," + c2.BidEndTime);
 		return c1.BidEndTime > c2.BidEndTime ? 1 : -1;
 	}
 

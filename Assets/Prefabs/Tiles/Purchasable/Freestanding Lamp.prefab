@@ -81,7 +81,6 @@ GameObject:
   - 4: {fileID: 400008}
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
-  - 114: {fileID: 11400000}
   - 114: {fileID: 11400006}
   m_Layer: 8
   m_Name: Freestanding Lamp
@@ -282,18 +281,6 @@ Light:
   m_ShadowAngle: 0
   m_IndirectIntensity: 1
   m_AreaSize: {x: 1, y: 1}
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899bcf3e490a42c4a9be5c1f820c0712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value: 40
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -322,6 +309,7 @@ MonoBehaviour:
   DisplayPluralName: 
   SaveCode: pl
   Description: 
+  Value: 1
   Rarity: 4
   BuyBlueprintCost: 200
   CanBeAttachedTo: 0

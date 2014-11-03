@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400004}
-  - 114: {fileID: 11400002}
   - 114: {fileID: 11400000}
   - 65: {fileID: 6500000}
   m_Layer: 0
@@ -211,18 +210,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: 0
   count: 4
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899bcf3e490a42c4a9be5c1f820c0712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value: 50
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,6 +225,7 @@ MonoBehaviour:
   DisplayPluralName: 
   SaveCode: pc
   Description: 
+  Value: 1
   Rarity: 4
   BuyBlueprintCost: 300
   CanBeAttachedTo: 0
@@ -252,7 +240,7 @@ MonoBehaviour:
   tilegrid: {fileID: 0}
   DefaultFloor: {fileID: 100006}
   CurrentFloor: {fileID: 0}
-  RoomTypes: 2
+  RoomTypes: -1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

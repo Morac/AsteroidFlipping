@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour
 	[TextArea]
 	public string Description = "";
 
+	public int Value = 0;
 	public TileRarity Rarity = TileRarity.Common;
 	public int BuyBlueprintCost = 0;
 
@@ -115,6 +116,14 @@ public class Tile : MonoBehaviour
 	void PlacedByPlayer()
 	{
 		Camera.main.Shake(ShakeAmount, ShakeDuration);
+		if(Value != 0)
+			GameManager.AsteroidValue += Value;
+	}
+
+	void RemovedByPlayer()
+	{
+		if (Value != 0)
+			GameManager.AsteroidValue -= Value;
 	}
 
 	public delegate void SaveCallback();

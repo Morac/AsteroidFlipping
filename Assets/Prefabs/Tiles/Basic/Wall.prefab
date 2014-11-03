@@ -45,7 +45,6 @@ GameObject:
   - 114: {fileID: 11400004}
   - 114: {fileID: 11400002}
   - 65: {fileID: 6500000}
-  - 114: {fileID: 11400006}
   m_Layer: 0
   m_Name: Wall
   m_TagString: Untagged
@@ -185,6 +184,7 @@ MonoBehaviour:
   DisplayPluralName: 
   SaveCode: bw
   Description: 
+  Value: 0
   Rarity: 4
   BuyBlueprintCost: 0
   CanBeAttachedTo: 1
@@ -200,18 +200,6 @@ MonoBehaviour:
   DefaultFloor: {fileID: 0}
   CurrentFloor: {fileID: 0}
   RoomTypes: -1
---- !u!114 &11400006
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899bcf3e490a42c4a9be5c1f820c0712, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  value: 20
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
