@@ -38,8 +38,8 @@ public class CurrentRoomInfo : MonoBehaviour
 		}
 		else
 		{
-			CurrentQuality = RoomManager.RoomQuality.None;
-			QualityLabel.text = QualityText(RoomManager.RoomQuality.None);
+			CurrentQuality = RoomManager.RoomQuality.Poor;
+			QualityLabel.text = QualityText(RoomManager.RoomQuality.Poor);
 			QualityLabel.color = Color.white;
 		}
 	}

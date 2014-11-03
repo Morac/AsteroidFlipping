@@ -13,7 +13,7 @@ public class Contract
 		Farming,
 		Storage
 	}
-	
+
 	public enum ContractSize
 	{
 		Small = 1,
@@ -43,9 +43,9 @@ public class Contract
 
 	public bool Evaluate(Tile[,] tiles)
 	{
-		foreach(var requirement in Requirements)
+		foreach (var requirement in Requirements)
 		{
-			if(!requirement.Pass(tiles))
+			if (!requirement.Pass())
 				return false;
 		}
 		return true;
@@ -55,10 +55,10 @@ public class Contract
 	{
 		bool log = false;
 
-		if(log) Debug.Log("Bid attempt by " + bidder + " for " + amount);
+		if (log) Debug.Log("Bid attempt by " + bidder + " for " + amount);
 		bool bidsuccessful = false;
 
-		if(amount <= 0)
+		if (amount <= 0)
 		{
 			if (log) Debug.Log("Bid fail: amount <= 0");
 			bidsuccessful = false;
@@ -79,7 +79,7 @@ public class Contract
 			else
 			{
 				if (log) Debug.Log("Bid fail: not low enough to beat " + Payout + " from " + LowBidder);
-				if(amount < Payout && amount >= ReservedBid)
+				if (amount < Payout && amount >= ReservedBid)
 					Payout = amount;
 				bidsuccessful = false;
 			}
@@ -91,7 +91,7 @@ public class Contract
 			bidsuccessful = true;
 		}
 
-		if(bidsuccessful)
+		if (bidsuccessful)
 		{
 			LowBidder = bidder;
 			ReservedBid = amount;
@@ -119,12 +119,21 @@ public class Contract
 		contract.Payout = GlobalSettings.BaseContractPayout * (int)size + Random.Range(-GlobalSettings.ContractVariation, GlobalSettings.ContractVariation);
 		contract.StartingAmount = contract.Payout;
 
-		for (int i = 0; i < NumRequirements(size); i++)
+		RoomManager.RoomQuality q;
+		switch (size)
 		{
-			var requirement = Requirement.GetRandomRequirement(size, type, contract.Requirements);
-			if (requirement != null)
-				contract.Requirements.Add(requirement);
+			default:
+			case ContractSize.Small:
+				q = RoomManager.RoomQuality.Moderate;
+				break;
+			case ContractSize.Medium:
+				q = RoomManager.RoomQuality.Good;
+				break;
+			case ContractSize.Large:
+				q = RoomManager.RoomQuality.Exquisite;
+				break;
 		}
+		contract.Requirements.Add(new Requirement(RoomManager.RoomType.LifeSupport, q, 1));
 
 		contract.BidEndTime = TimeManager.Now + Random.Range(GlobalSettings.ContractTimeMin, GlobalSettings.ContractTimeMax) * GlobalSettings.ContractTimeIncr;
 
@@ -134,7 +143,7 @@ public class Contract
 	public override string ToString()
 	{
 		string s = Type + " Contract (" + Size + ")\n";
-		foreach(var r in Requirements)
+		foreach (var r in Requirements)
 		{
 			s += r.ToString() + ", ";
 		}
@@ -142,321 +151,61 @@ public class Contract
 		return s;
 	}
 
-	static int NumRequirements(ContractSize size)
+	public class Requirement
 	{
-		switch (size)
+		public RoomManager.RoomType Type;
+		public RoomManager.RoomQuality Quality;
+		public int Count;
+
+		public Requirement() { }
+
+		public Requirement(RoomManager.RoomType type, RoomManager.RoomQuality quality, int count)
 		{
-			default:
-			case ContractSize.Small:
-				return Random.Range(1, 4);
-			case ContractSize.Medium:
-				return Random.Range(3, 6);
-			case ContractSize.Large:
-				return Random.Range(5, 8);
+			Type = type;
+			Quality = quality;
+			Count = count;
 		}
-	}
 
-	#region requirements
-	public abstract class Requirement
-	{
-		public abstract float Chance(List<Requirement> existing);
-		public abstract bool Pass(Tile[,] grid);
-		public abstract Requirement Create(ContractSize size, ContractType type, List<Requirement> existing);
-		public abstract string SaveCode();
+		public bool Pass()
+		{
+			int count = 0;
+			foreach(var room in RoomManager.Instance.Rooms)
+			{
+				if(room.Type == Type && room.Quality >= Quality)
+				{
+					count++;
+				}
+			}
+			return count >= Count;
+		}
 
-		public abstract string Save();
-		protected abstract void LoadData(string[] s);
+		public string Save()
+		{
+			return Count + ":" + Type + ":" + Quality;
+		}
 
 		public static Requirement Load(string s)
 		{
-			string[] split = s.Split('.');
-
-			var possible = new List<Requirement>();
-			possible.AddRange(RequiredSubclasses);
-			possible.AddRange(Subclasses);
-
-			foreach(var type in possible)
-			{
-				if(split[0] == type.SaveCode())
-				{
-					Requirement r = (Requirement)System.Activator.CreateInstance(type.GetType());
-					r.LoadData(split);
-					return r;
-				}
-			}
-			return null;
-		}
-
-		public static List<Requirement> RequiredSubclasses = new List<Requirement>()
-		{
-			new ValueRequirement()
-		};
-		public static List<Requirement> Subclasses = new List<Requirement>()
-		{
-			new TileRequirement(),
-			new TileExclusionRequirement(),
-			//new RoomRequirement()
-		};
-
-		public static Requirement GetRandomRequirement(ContractSize size, ContractType t, List<Requirement> existingRequirements)
-		{
-			foreach(var req in RequiredSubclasses)
-			{
-				if(!existingRequirements.Any(item => item.SaveCode() == req.SaveCode()))
-				{
-					return req.Create(size, t, existingRequirements);
-				}
-			}
-
-			float sum = 0;
-			foreach(var type in Subclasses)
-			{
-				sum += type.Chance(existingRequirements);
-			}
-			float r = Random.Range(0, sum);
-			foreach(var type in Subclasses)
-			{
-				r -= type.Chance(existingRequirements);
-				if (r <= 0)
-					return type.Create(size, t, existingRequirements);
-			}
-			return null;
-		}
-	}
-
-	public class TileRequirement : Requirement
-	{
-
-		public int count;
-		public Tile tile;
-
-		public override float Chance(List<Requirement> existing)
-		{
-			return 5f / 6f;
-		}
-
-		public override Requirement Create(ContractSize size, ContractType type, List<Requirement> existingRequirements)
-		{
-			var r = new TileRequirement();
-			var possibletiles = TilePrefabList.Instance.GetTilesWithTag(type);
-			foreach (var existing in existingRequirements)
-			{
-				if(existing is TileRequirement)
-				{
-					var texist = existing as TileRequirement;
-					possibletiles.Remove(texist.tile);
-				}
-			}
-			if (possibletiles.Count > 0)
-				r.tile = possibletiles[Random.Range(0, possibletiles.Count - 1)];
-			else
-				return null;
-
-			r.count = Random.Range(1, (int)size * (int)r.tile.Rarity);
-
+			Requirement r = new Requirement();
+			var parts = s.Split(':');
+			r.Count = int.Parse(parts[0]);
+			r.Type = (RoomManager.RoomType)System.Enum.Parse(typeof(RoomManager.RoomType), parts[1]);
+			r.Quality = (RoomManager.RoomQuality)System.Enum.Parse(typeof(RoomManager.RoomQuality), parts[2]);
 			return r;
 		}
 
-		public override bool Pass(Tile[,] grid)
-		{
-			int c = 0;
-			foreach(var t in grid)
-			{
-				if (t == null)
-					continue;
-				if(t.name == tile.name)
-				{
-					c++;
-				}
-			}
-			return c >= count;
-		}
-
 		public override string ToString()
 		{
-			return count + "x " + tile.GetDisplayPluralName();
-		}
-
-		public override string SaveCode()
-		{
-			return "tr";
-		}
-
-		public override string Save()
-		{
-			return SaveCode() + "." + count + "." + tile.SaveCode;
-		}
-
-		protected override void LoadData(string[] s)
-		{
-			count = int.Parse(s[1]);
-			tile = TilePrefabList.Instance.GetAllTiles().Find(item => item.SaveCode == s[2]);
+			return Count + "x " + Quality + " " + Type;
 		}
 	}
-
-	public class TileExclusionRequirement : Requirement
-	{
-		public Tile tile;
-
-		public override float Chance(List<Requirement> existing)
-		{
-			return 1f / 6f;
-		}
-
-		public override Requirement Create(ContractSize size, ContractType type, List<Requirement> existingRequirements)
-		{
-			TileExclusionRequirement r = new TileExclusionRequirement();
-			var possibletiles = TilePrefabList.Instance.GetTilesWithoutTag(type);
-
-			foreach(var exist in existingRequirements)
-			{
-				if(exist is TileExclusionRequirement)
-				{
-					var texist = exist as TileExclusionRequirement;
-					possibletiles.Remove(texist.tile);
-				}
-			}
-
-			if (possibletiles.Count > 0)
-				r.tile = possibletiles[Random.Range(0, possibletiles.Count - 1)];
-			else
-				return null;
-			return r;
-		}
-
-		public override bool Pass(Tile[,] grid)
-		{
-			foreach(var t in grid)
-			{
-				if (t == null)
-					continue;
-				if (t.name == tile.name)
-					return false;
-			}
-			return true;
-		}
-
-		public override string ToString()
-		{
-			return "No " + tile.GetDisplayPluralName();
-		}
-
-		public override string SaveCode()
-		{
-			return "ter";
-		}
-
-		public override string Save()
-		{
-			return SaveCode() + "." + tile.SaveCode;
-		}
-
-		protected override void LoadData(string[] s)
-		{
-			tile = TilePrefabList.Instance.GetAllTiles().Find(item => item.SaveCode == s[1]);
-		}
-	}
-
-	public class ValueRequirement : Requirement
-	{
-		public int Value;
-
-		public override float Chance(List<Requirement> existing)
-		{
-			return 0;
-		}
-
-		public override Requirement Create(ContractSize size, ContractType type, List<Requirement> existing)
-		{
-			ValueRequirement vr = new ValueRequirement();
-			int r = Random.Range(-GlobalSettings.AsteroidValueVariation, GlobalSettings.AsteroidValueVariation + 1) * GlobalSettings.AsteroidValueIncrement * (int)size;
-			vr.Value = (int)size * GlobalSettings.AsteroidValueMod + r;
-			return vr;
-		}
-
-		public override bool Pass(Tile[,] grid)
-		{
-			var total = 0;
-			foreach(var tile in grid)
-			{
-				if(tile != null)
-				{
-					total += tile.Value;
-				}
-			}
-
-			return total >= Value;
-		}
-
-		public override string SaveCode()
-		{
-			return "vr";
-		}
-
-		public override string Save()
-		{
-			return SaveCode() + "." + Value.ToString();
-		}
-
-		protected override void LoadData(string[] s)
-		{
-			int.TryParse(s[1], out Value);
-		}
-
-		public override string ToString()
-		{
-			return "Asteroid Value at least " + GlobalSettings.Currency + Value;
-		}
-	}
-
-	public class RoomRequirement : Requirement
-	{
-		public int count;
-
-		public override float Chance(List<Requirement> existing)
-		{
-			return 0;
-		}
-
-		public override Requirement Create(ContractSize size, ContractType type, List<Requirement> existingRequirements)
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public override bool Pass(Tile[,] grid)
-		{
-			return false;
-		}
-
-		public override string ToString()
-		{
-			return count > 1 ? count + " Rooms" : count + " Room";
-		}
-
-		public override string SaveCode()
-		{
-			throw new System.NotImplementedException();
-		}
-
-		public override string Save()
-		{
-			throw new System.NotImplementedException();
-		}
-
-		protected override void LoadData(string[] s)
-		{
-			throw new System.NotImplementedException();
-		}
-	}
-
-	#endregion
 
 
 	public string Save()
 	{
 		string s = "";
 		s += Size + "," + Type + "," + Payout + "," + StartingAmount + "," + BidEndTime + "," + LowBidder + "," + ReservedBid;
-		foreach(var r in Requirements)
+		foreach (var r in Requirements)
 		{
 			s += "," + r.Save();
 		}
@@ -474,7 +223,7 @@ public class Contract
 		c.BidEndTime = int.Parse(split[4]);
 		c.LowBidder = split[5];
 		c.ReservedBid = int.Parse(split[6]);
-		
+
 		for (int i = 7; i < split.Length; i++)
 		{
 			c.Requirements.Add(Requirement.Load(split[i]));

@@ -16,8 +16,7 @@ public class RoomManager : Singleton<RoomManager>
 
 	public enum RoomQuality
 	{
-		None = 0,
-		Poor = 1,
+		Poor = 0,
 		Moderate = 5,
 		Good = 10,
 		Exquisite = 20
@@ -242,7 +241,8 @@ public class RoomManager : Singleton<RoomManager>
 			s = s.Substring(0, s.Length - 1);
 			s += ";";
 		}
-		s = s.Substring(0, s.Length - 1);
+		if(s.Length > 0)
+			s = s.Substring(0, s.Length - 1);
 		return s;
 	}
 
