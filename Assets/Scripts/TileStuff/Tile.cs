@@ -37,8 +37,6 @@ public class Tile : MonoBehaviour
 	public float ShakeAmount = 0.05f;
 	public float ShakeDuration = 0.2f;
 
-	public List<Contract.ContractType> ContractTags = new List<Contract.ContractType>();
-
 	[HideInInspector]
 	public int X;
 	[HideInInspector]

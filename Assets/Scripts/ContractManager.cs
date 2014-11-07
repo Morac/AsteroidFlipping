@@ -16,11 +16,20 @@ public class ContractManager : Singleton<ContractManager>
 			{
 				LoadContracts();
 			}
-			if(_contracts == null)
-			{
-				GenerateContracts();
-			}
 			return _contracts;
+		}
+	}
+
+	static List<ContractTemplate> _templates;
+	public static List<ContractTemplate> Templates
+	{
+		get
+		{
+			if(_templates == null)
+			{
+				//load
+			}
+			return _templates;
 		}
 	}
 
@@ -60,22 +69,19 @@ public class ContractManager : Singleton<ContractManager>
 	{
 		if(Contracts.Count < MaxContracts)
 		{
-			var contract = Contract.GenerateRandomContract();
-			_contracts.Add(contract);
-			if(OnContractCreated != null)
-				OnContractCreated(contract);
+			GenerateContract();
 		}
 	}
 
-	static void GenerateContracts()
+	void GenerateContract()
 	{
-		_contracts = new List<Contract>();
-		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Small, Contract.ContractType.Housing));
-		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Small, Contract.ContractType.Housing));
-		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Medium, Contract.ContractType.Housing));
-		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Medium, Contract.ContractType.Housing));
-		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Large, Contract.ContractType.Housing));
-		_contracts.Add(Contract.GenerateRandomContract(Contract.ContractSize.Large, Contract.ContractType.Housing));
+		var template = Templates[Random.Range(0, Templates.Count)];
+
+		var contract = template.Create();
+
+		_contracts.Add(contract);
+		if (OnContractCreated != null)
+			OnContractCreated(contract);
 	}
 
 
@@ -83,7 +89,10 @@ public class ContractManager : Singleton<ContractManager>
 	[UnityEditor.MenuItem("Utils/Test contract manager")]
 	static void test()
 	{
-		GenerateContracts();
+		for (int i = 0; i < 6; i++)
+		{
+			Instance.GenerateContract();
+		}
 		SaveContracts();
 		LoadContracts();
 		foreach (var contract in Contracts)

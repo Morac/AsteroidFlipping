@@ -74,7 +74,7 @@ public class ContractList : GenericUIList
 	void RefreshInfo(ListItem item)
 	{
 		var data = item.Data as Contract;
-		item.Labels[(int)Labels.Name].text = data.Type.ToString();
+		item.Labels[(int)Labels.Name].text = data.Name.ToString();
 
 		string requirements = "";
 		foreach (var r in data.Requirements)

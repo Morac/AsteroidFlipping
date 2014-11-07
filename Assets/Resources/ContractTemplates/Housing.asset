@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5002cb1ab6cfe844929450071cf1888, type: 3}
+  m_Name: Housing
+  m_EditorClassIdentifier: 
+  Name: Housing
+  PayoutMin: 10
+  PayoutMax: 20
+  Rooms:
+  - Type: 16
+    MinQuality: 5
+    MaxQuality: 20
+    Min: 1
+    Max: 1
+  - Type: 2
+    MinQuality: 5
+    MaxQuality: 20
+    Min: 1
+    Max: 1
